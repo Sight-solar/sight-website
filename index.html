@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1A2835">
+  <meta name="description" content="A SIGHT integra dados de SCADA, O&M, termografia e eletroluminescência em um gêmeo digital para identificar e acompanhar defeitos por módulo em usinas solares.">
+  <title>SIGHT — Dados conectados para a operação solar</title>
+  <link rel="icon" href="assets/favicon.png" type="image/png" sizes="64x64">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+<header class="header wrap" id="topo">
+  <a class="brand" href="#topo" aria-label="SIGHT — início"><img src="assets/logo.JPG" width="640" height="640" alt="SIGHT"></a>
+  <nav aria-label="Navegação principal">
+    <a href="#solucao">Como funciona</a>
+    <a href="#publico">Para quem</a>
+    <a class="nav-contact" href="#contato">Fale com a SIGHT <span aria-hidden="true">↗</span></a>
+  </nav>
+</header>
+<main id="conteudo">
+  <section class="hero wrap" aria-labelledby="hero-title">
+    <!-- ÁREA RESERVADA PARA VÍDEO DE FUNDO: inserir aqui um vídeo decorativo,
+         sem áudio, mantendo o contraste do texto e a ilustração como alternativa.
+         Consulte as orientações de acessibilidade e tamanho no README.md. -->
+    <div class="hero-video-slot" id="hero-video-slot" aria-hidden="true"></div>
+    <div class="hero-copy">
+      <p class="eyebrow"><span class="tiny-cross" aria-hidden="true">+</span> Dados para a operação solar</p>
+      <h1 id="hero-title">Sua usina.<br>Cada <span class="highlight">módulo.</span><br>Uma só visão.</h1>
+      <p class="hero-description">A SIGHT conecta dados de SCADA, O&M e inspeções em um gêmeo digital da usina para identificar e acompanhar defeitos em cada módulo.</p>
+      <a class="button" href="#contato">Fale com a SIGHT <span aria-hidden="true">↗</span></a>
+    </div>
+    <figure class="plant-visual">
+      <div class="visual-top"><span>DA USINA AO MÓDULO</span><span aria-hidden="true">[ + ]</span></div>
+      <div class="plant-drawing">
+        <div class="orbit orbit-one" aria-hidden="true"></div><div class="orbit orbit-two" aria-hidden="true"></div>
+        <svg class="plant-svg" viewBox="0 0 600 420" aria-hidden="true">
+          <defs><pattern id="module" width="46" height="58" patternUnits="userSpaceOnUse"><rect class="panel" x="3" y="3" width="39" height="50" rx="1"/><path class="panel-grid" d="M16 4v48M29 4v48M4 28h37"/></pattern></defs>
+          <path class="plant-base" d="M40 320 303 399 563 244 304 165Z"/>
+          <g transform="translate(28 157) matrix(.78 .27 -.53 .48 160 -100)"><rect width="230" height="174" fill="url(#module)"/><rect x="262" width="230" height="174" fill="url(#module)"/><rect y="201" width="230" height="174" fill="url(#module)"/><rect x="262" y="201" width="230" height="174" fill="url(#module)"/><rect class="selected-panel" x="357" y="61" width="39" height="50" rx="1"/><path class="selected-panel-grid" d="M370 62v48M383 62v48M358 86h37"/></g>
+          <path class="callout" d="M436 200v-84H333"/><circle class="callout-dot" cx="436" cy="200" r="4"/>
+          <path class="drawing-mark" d="M80 351h40m-20-20v40M495 65h30m-15-15v30"/>
+        </svg>
+        <div class="module-label"><span class="status-dot" aria-hidden="true"></span>Histórico por módulo</div>
+      </div>
+      <div class="visual-sources"><span>SCADA + O&M</span><span class="source-plus" aria-hidden="true">+</span><span>INSPEÇÕES</span></div>
+      <figcaption>Ilustração conceitual, sem dados de uma usina real.</figcaption>
+    </figure>
+    <div class="hero-bottom"><span>OPERAÇÃO E INSPEÇÃO NO MESMO CONTEXTO</span><a href="#desafio" aria-label="Conheça o desafio">↓</a></div>
+  </section>
+  <section class="section wrap" id="desafio" aria-labelledby="problem-title">
+    <div class="section-label"><span>01 /</span><span>O DESAFIO</span></div>
+    <div class="section-content">
+      <h2 id="problem-title">Dados separados. <br>Defeitos sem acompanhamento.</h2>
+      <p class="lead">O SCADA registra a operação. As inspeções revelam as condições dos módulos. Sem cruzar essas informações, os defeitos são identificados tarde e sua evolução fica sem acompanhamento.</p>
+      <div class="silos">
+        <div><span class="small-label">OPERAÇÃO</span><h3>Desempenho da usina</h3><p>Dados de SCADA e registros de O&M.</p></div>
+        <span class="disconnect" aria-hidden="true">··· / ···</span>
+        <div><span class="small-label">INSPEÇÕES</span><h3>Condição dos módulos</h3><p>Imagens de termografia e eletroluminescência.</p></div>
+      </div>
+    </div>
+  </section>
+  <section class="approach-band" id="solucao" aria-labelledby="approach-title"><div class="wrap section">
+    <div class="section-label"><span>02 /</span><span>COMO FUNCIONA</span></div>
+    <div class="section-content"><h2 id="approach-title">Do dado ao diagnóstico <br>de cada módulo.</h2><p class="lead">Uma camada de dados que reúne o histórico operacional e as inspeções da usina.</p></div>
+    <div class="steps">
+      <article class="step"><div class="step-top"><span>01</span><svg viewBox="0 0 64 48" aria-hidden="true"><path d="M4 10h18l12 14h26M4 38h18l12-14M4 24h15"/><circle cx="4" cy="10" r="3"/><circle cx="4" cy="38" r="3"/><circle cx="59" cy="24" r="3"/></svg></div><h3>Integração dos dados</h3><p>Reunimos dados de SCADA e O&M com imagens de termografia e eletroluminescência dos prestadores que já realizam as inspeções.</p></article>
+      <article class="step"><div class="step-top"><span>02</span><svg viewBox="0 0 64 48" aria-hidden="true"><path d="m32 4 25 13-25 13L7 17Z M7 25l25 13 25-13M7 33l25 13 25-13"/></svg></div><h3>Gêmeo digital da usina</h3><p>Organizamos essas informações em uma representação digital da usina, com identificação e histórico de cada módulo.</p></article>
+      <article class="step"><div class="step-top"><span>03</span><svg viewBox="0 0 64 48" aria-hidden="true"><path d="M6 6v36h52M14 32l12-8 11 3L55 9"/><circle cx="55" cy="9" r="4"/></svg></div><h3>Análise dos defeitos</h3><p>Cruzamos desempenho e resultados das inspeções para identificar defeitos, acompanhar sua evolução e apoiar as decisões de O&M.</p></article>
+    </div>
+  </div></section>
+  <section class="section wrap audience" id="publico" aria-labelledby="who-title">
+    <div class="section-label"><span>03 /</span><span>PARA QUEM</span></div>
+    <div class="section-content"><h2 id="who-title">Para quem opera e gerencia <br>usinas solares no Brasil.</h2>
+      <div class="audience-row"><span class="row-arrow" aria-hidden="true">↗</span><div><h3>Empresas de O&M</h3><p>Histórico por módulo e dados de inspeção conectados à operação, para dar contexto às decisões de manutenção.</p></div></div>
+      <div class="audience-row"><span class="row-arrow" aria-hidden="true">↗</span><div><h3>Proprietários de usinas de GD</h3><p>Uma visão integrada dos ativos de geração distribuída, do desempenho da usina às condições de cada módulo.</p></div></div>
+    </div>
+  </section>
+  <section class="contact-band" id="contato" aria-labelledby="contact-title"><div class="wrap contact">
+    <div><p class="eyebrow">FALE COM A SIGHT</p><h2 id="contact-title">Vamos conectar os dados <br>da sua usina.</h2><p>Converse com a SIGHT sobre sua operação e seus dados de inspeção.</p></div>
+    <div class="contact-address"><span class="contact-arrow" aria-hidden="true">↗</span><a class="button email" href="mailto:rafael@sight.solar">rafael@sight.solar <span aria-hidden="true">↗</span></a></div>
+  </div></section>
+</main>
+<footer class="wrap footer"><a class="brand" href="#topo" aria-label="SIGHT — início"><img src="assets/logo.JPG" width="640" height="640" alt="SIGHT" loading="lazy"></a><span>Dados conectados. Visão por módulo.</span><span>© 2026 SIGHT</span><a href="#topo">Voltar ao topo ↑</a></footer>
+</body>
+</html>
