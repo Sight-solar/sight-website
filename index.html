@@ -1,87 +1,985 @@
-<!doctype html>
-<html lang="pt-BR">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#1A2835">
-  <meta name="description" content="A SIGHT integra dados de SCADA, O&M, termografia e eletroluminescência em um gêmeo digital para identificar e acompanhar defeitos por módulo em usinas solares.">
-  <title>SIGHT — Dados conectados para a operação solar</title>
-  <link rel="icon" href="assets/favicon.png" type="image/png" sizes="64x64">
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
-<header class="header wrap" id="topo">
-  <a class="brand" href="#topo" aria-label="SIGHT — início"><img src="assets/logo.JPG" width="640" height="640" alt="SIGHT"></a>
-  <nav aria-label="Navegação principal">
-    <a href="#solucao">Como funciona</a>
-    <a href="#publico">Para quem</a>
-    <a class="nav-contact" href="#contato">Fale com a SIGHT <span aria-hidden="true">↗</span></a>
-  </nav>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><title>SIGHT — Dados conectados para a operação solar</title><link rel="icon" type="image/png" href="img/mark.png"><link rel="apple-touch-icon" href="img/mark.png"></head><body>
+<meta name="description" content="SIGHT: connected data for solar operations. Memory, Brain and interfaces for solar plants.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Montserrat:wght@500&display=swap" rel="stylesheet">
+<style>
+/* Layout: full-bleed satellite hero, then a single 1200px column of sections on deep navy.
+   Night & Sunrise: navy ground, peach is the brand signal, blue only inside product visuals. */
+:root{
+  color-scheme:dark;
+  --ground:#0B121A; --navy:#1A2835; --surface:#121C27; --surface-2:#182432;
+  --glass:rgba(12,18,26,.64); --line:rgba(242,244,247,.12); --line-2:rgba(242,244,247,.07);
+  --fg:#F2F4F7; --fg-2:#9AA7B8; --fg-3:#6E7C8E;
+  --peach:#F3AF8A; --peach-ink:#2A1608;
+  --blue:#7FB2FF; --attn:#FFA24D; --s3:#F5C95B;
+  --f-display:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  --f-mark:"Montserrat","Instrument Sans",system-ui,sans-serif;
+  --wrap:1200px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--ground);color:var(--fg);font-family:var(--f-display);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+img{max-width:100%;display:block}
+h1,h2,h3{text-wrap:balance;margin:0;font-weight:600;letter-spacing:-.02em}
+p{margin:0}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.muted{color:var(--fg-2)}
+:root:not([data-lang="en"]) .en{display:none!important}
+:root[data-lang="en"] .pt{display:none!important}
+:focus-visible{outline:2px solid var(--peach);outline-offset:3px;border-radius:4px}
+.wrap{max-width:var(--wrap);margin:0 auto;padding-inline:clamp(16px,4vw,40px)}
+.kicker{font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--peach)}
+.btn{display:inline-flex;align-items:center;gap:8px;height:46px;padding:0 22px;border-radius:23px;font-weight:500;font-size:15px;text-decoration:none;border:1px solid transparent;cursor:pointer;font-family:inherit}
+.btn-primary{background:var(--peach);color:var(--peach-ink)}
+.btn-primary:hover{background:#F7C3A6}
+.btn-ghost{border-color:rgba(242,244,247,.28);color:var(--fg);background:transparent}
+.btn-ghost:hover{border-color:var(--fg)}
+
+/* nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(11,18,26,.72);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--line-2)}
+.nav .wrap{display:flex;align-items:center;gap:24px;height:64px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brand img{width:28px;height:30px}
+.brand span{font-family:var(--f-mark);font-weight:500;font-size:20px;letter-spacing:.01em}
+.links{display:flex;gap:26px;margin-left:auto;font-size:14px}
+.links a{text-decoration:none;color:var(--fg-2)}
+.links a:hover,.links a[aria-current="page"]{color:var(--fg)}
+.lang{display:flex;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.lang button{background:none;border:0;color:var(--fg-2);font:500 12px var(--f-mono);padding:6px 10px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--fg);color:var(--ground)}
+.nav .btn{height:36px;padding:0 16px;font-size:14px}
+@media (max-width:900px){.links{display:none}.nav .wrap{gap:12px}.nav .lang{margin-left:auto}}
+@media (max-width:420px){.nav .btn{display:none}}
+
+/* hero */
+.hero{position:relative;overflow:hidden;padding-block:56px 40px}
+.hero .wrap{max-width:1440px;display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);gap:32px;align-items:start}
+.hero-copy{padding-top:72px;position:relative;z-index:2}
+.hero h1{font-size:clamp(38px,4.4vw,56px);line-height:1.03;margin:20px 0 22px}
+.hero h1 em{font-style:normal;color:var(--peach)}
+.hero p.lead{font-size:17px;color:#C9D1DC;max-width:56ch}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:12px;margin:32px 0 40px}
+.partners-line{font-size:13px;color:var(--fg-2);display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}
+.partners-line .plogos{display:inline-flex;align-items:center;gap:16px}
+.partners-line img{height:16px;width:auto;opacity:.82}
+.partners-line .pl-gera{height:21px}
+.scene-wrap{position:relative;width:100%;aspect-ratio:1000/836;max-width:1000px;justify-self:end}
+.scene{position:absolute;left:0;top:0;width:1000px;height:836px;transform-origin:0 0}
+.scene .sat{position:absolute;left:155px;top:-49px;width:607px;height:818px;filter:saturate(.85) contrast(1.08) brightness(.9);-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 55%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 55%,transparent 100%)}
+.scene .puff{position:absolute;left:260px;top:456px;width:190px;height:230px;border-radius:50%;background:rgba(255,255,255,.5);filter:blur(26px);animation:drift 18s ease-in-out infinite alternate}
+.scene .puff2{left:300px;top:430px;width:120px;height:120px;background:rgba(255,255,255,.35);filter:blur(20px)}
+@keyframes drift{from{transform:translate(-10px,6px)}to{transform:translate(14px,-8px)}}
+.cloudg{animation:driftm 18s ease-in-out infinite alternate}
+@keyframes driftm{from{transform:translate(-3.8px,2.3px)}to{transform:translate(5.3px,-3px)}}
+.card{position:absolute;background:var(--glass);-webkit-backdrop-filter:blur(16px) saturate(1.2);backdrop-filter:blur(16px) saturate(1.2);border:1px solid rgba(255,255,255,.14);border-radius:12px;box-shadow:0 18px 50px rgba(0,0,0,.45);font-size:12.5px;line-height:1.45;color:rgba(255,255,255,.74)}
+.card .ch{display:flex;align-items:center;gap:8px;padding:12px 14px 0;font-size:13px;font-weight:600;color:#fff}
+.card .ch .r{margin-left:auto;font-weight:400;font-size:12px;color:rgba(255,255,255,.5)}
+.card .cb{padding:10px 14px 14px}
+.kv{display:grid;grid-template-columns:1fr auto;row-gap:6px}
+.kv .v{color:#fff;font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.chip{font-family:var(--f-mono);font-size:10px;padding:1px 7px;border-radius:9px}
+.chip-s3{background:rgba(240,190,60,.2);color:var(--s3)}
+.flagchip{position:absolute;font-family:var(--f-mono);font-size:11px;font-weight:500;padding:3px 8px;border-radius:10px;background:rgba(255,154,61,.92);color:#1A0E02;animation:pulse 4s ease-out infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,154,61,.7)}35%{box-shadow:0 0 0 12px rgba(255,154,61,0)}100%{box-shadow:0 0 0 0 rgba(255,154,61,0)}}
+.tbl{fill:rgba(20,32,52,.45);stroke:rgba(190,215,255,.45);stroke-width:.3}
+.tbl-s{fill:rgba(8,12,20,.55);stroke:rgba(190,215,255,.3);stroke-width:.3}
+.mid{fill:rgba(0,0,0,.5)}
+.fence{fill:none;stroke:rgba(255,255,255,.55);stroke-width:.4;stroke-dasharray:1.6 1.2}
+.ac{fill:none;stroke:rgba(255,255,255,.35);stroke-width:.5}
+.flow{fill:none;stroke:var(--blue);stroke-width:.7;stroke-dasharray:1.4 1.8;filter:drop-shadow(0 0 1.2px #7FB2FF);animation:flow 1.6s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-6.4}}
+.mv{fill:none;stroke:#fff;stroke-width:.8}
+.eq{fill:#fff}
+.cloud{fill:rgba(0,4,10,.42);filter:blur(2.5px)}
+.flag{fill:rgba(255,160,70,.45);stroke:#FFB067;stroke-width:.7;filter:drop-shadow(0 0 2.5px #FF9A3D)}
+.lbl{fill:rgba(255,255,255,.85);font:500 3.4px var(--f-mono)}
+.mine{fill:none;stroke:var(--blue);stroke-width:1.4;filter:drop-shadow(0 0 3px rgba(127,178,255,.7))}
+.auto{fill:none;stroke:rgba(255,255,255,.45);stroke-width:1.1;stroke-dasharray:4 4}
+.dot{fill:var(--blue)}
+.sl{fill:none;stroke:rgba(255,255,255,.45);stroke-width:1}
+.slf{fill:none;stroke:var(--blue);stroke-width:1.5;stroke-dasharray:4 3;animation:flow2 1s linear infinite}
+@keyframes flow2{to{stroke-dashoffset:-14}}
+.sym{fill:rgba(12,16,22,.8);stroke:rgba(255,255,255,.85);stroke-width:1}
+.slt{fill:rgba(255,255,255,.5);font:400 9px var(--f-mono)}
+.slk{fill:#fff;font:500 9px var(--f-mono)}
+.band{fill:rgba(255,255,255,.08)}
+.exp{fill:none;stroke:rgba(255,255,255,.4);stroke-width:1;stroke-dasharray:3 3}
+.act{fill:none;stroke:var(--blue);stroke-width:1.8}
+.scene-note{font-size:12px;color:var(--fg-3);text-align:right;margin-top:6px}
+@media (max-width:960px){
+  .hero .wrap{grid-template-columns:minmax(0,1fr)}
+  .hero-copy{padding-top:8px}
+  .scene-wrap{justify-self:stretch}
+}
+
+/* sections */
+section.block{padding-block:clamp(72px,10vw,120px);border-top:1px solid var(--line-2)}
+.sec-head{display:grid;gap:16px;max-width:760px;margin-bottom:48px}
+.sec-head h2{font-size:clamp(30px,3.6vw,44px);line-height:1.08}
+.sec-head p{color:var(--fg-2);font-size:17px;max-width:62ch}
+
+/* problem */
+.islands{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:28px}
+.island{position:relative;background:var(--surface);border:1px solid var(--line-2);border-radius:12px;padding:18px;display:grid;gap:8px;align-content:start}
+/* broken link between neighbouring cards: dashes from each side, gap in the middle */
+.island:not(:last-child)::after{content:"";position:absolute;top:50%;right:-29px;width:30px;height:1px;background-image:repeating-linear-gradient(90deg,var(--fg-3) 0 3px,transparent 3px 6px);-webkit-mask-image:linear-gradient(90deg,#000 0 33%,transparent 33% 67%,#000 67%);mask-image:linear-gradient(90deg,#000 0 33%,transparent 33% 67%,#000 67%)}
+.disconnect{margin-top:44px;font-family:var(--f-display);font-size:clamp(22px,2.4vw,30px);line-height:1.25;font-weight:500;letter-spacing:-.01em;color:var(--fg);text-wrap:balance;max-width:44ch}
+.disconnect em{font-style:normal;color:var(--peach)}
+.island h3{font-size:15px}
+.island p{font-size:14px;color:var(--fg-2)}
+.island .src{font-family:var(--f-mono);font-size:11px;color:var(--fg-3)}
+/* mid widths: 3 + 2 on a 6-track grid, no orphan; connectors hidden */
+@media (max-width:1060px){.islands{grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}.island{grid-column:span 2}.island:nth-child(n+4){grid-column:span 3}.island::after{display:none}}
+/* phone: one column, connectors turn vertical */
+@media (max-width:600px){.islands{grid-template-columns:minmax(0,1fr);gap:28px}.island,.island:nth-child(n+4){grid-column:auto}
+  .island:not(:last-child)::after{display:block;top:auto;bottom:-29px;right:auto;left:28px;width:1px;height:30px;background-image:repeating-linear-gradient(180deg,var(--fg-3) 0 3px,transparent 3px 6px);-webkit-mask-image:linear-gradient(180deg,#000 0 33%,transparent 33% 67%,#000 67%);mask-image:linear-gradient(180deg,#000 0 33%,transparent 33% 67%,#000 67%)}
+  .disconnect{margin-top:36px}}
+
+/* platform */
+.layers{display:grid;gap:16px}
+.layer{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:40px;align-items:center;background:var(--surface);border:1px solid var(--line-2);border-radius:16px;padding:clamp(20px,3.5vw,40px)}
+.layer .idx{font-family:var(--f-mono);font-size:12px;color:var(--fg-3);margin-bottom:12px}
+.layer h3{font-size:clamp(26px,2.8vw,34px);margin-bottom:12px}
+.layer h3 small{display:block;font-size:14px;font-weight:500;color:var(--peach);letter-spacing:0;margin-bottom:6px}
+.layer p{color:#C9D1DC;max-width:52ch}
+.layer ul{list-style:none;padding:0;margin:18px 0 0;display:grid;gap:8px;font-size:14px;color:var(--fg-2)}
+.layer li{display:flex;gap:10px}
+.layer li::before{content:"";flex:none;width:6px;height:6px;border-radius:3px;background:var(--peach);margin-top:8px}
+.viz{background:var(--ground);border:1px solid var(--line-2);border-radius:12px;padding:16px;min-width:0}
+.viz svg{width:100%;height:auto;display:block}
+@media (max-width:900px){.layer{grid-template-columns:minmax(0,1fr);gap:24px}}
+.status{display:inline-flex;align-items:center;gap:6px;font-family:var(--f-mono);font-size:11px;padding:2px 8px;border-radius:10px;border:1px solid var(--line)}
+.status.live{color:#9FE3C1;border-color:rgba(159,227,193,.35)}
+.status.dev{color:var(--fg-2)}
+.uis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.ui{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface-2);display:grid;grid-template-rows:auto 1fr}
+.ui .thumb{height:110px;position:relative;overflow:hidden;background:#0E1823}
+.ui .meta{padding:10px 12px;display:grid;gap:6px;align-content:start}
+.ui .meta b{font-size:14px;font-weight:600}
+@media (max-width:560px){.uis{grid-template-columns:minmax(0,1fr)}}
+
+/* twin features */
+.feature{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:48px;align-items:center;padding-block:40px}
+.feature + .feature{border-top:1px solid var(--line-2)}
+.feature.flip .ftext{order:2}
+.feature h3{font-size:clamp(24px,2.6vw,32px);margin-bottom:12px}
+.feature p{color:#C9D1DC;max-width:50ch}
+.feature .fine{font-size:13px;color:var(--fg-3);margin-top:14px}
+.fviz{background:radial-gradient(120% 100% at 50% 0%,#14202D,#0B121A 70%);border:1px solid var(--line-2);border-radius:16px;padding:18px;min-width:0;position:relative;overflow:hidden}
+.fviz svg{width:100%;height:auto;display:block}
+.readout{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:12px;font-family:var(--f-mono);font-size:12px;color:var(--fg-2)}
+.readout b{color:var(--fg);font-weight:500}
+@media (max-width:900px){.feature{grid-template-columns:minmax(0,1fr);gap:24px}.feature.flip .ftext{order:0}}
+/* feature: map to module */
+.crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;font-family:var(--f-mono);font-size:12px;color:var(--fg-2);min-height:20px;margin-bottom:8px}
+.crumbs > *{transition:opacity .4s,color .4s}
+.crumbs i{font-style:normal;color:var(--fg-3)}
+.crumbs .off{opacity:0}
+.crumbs .cur{color:var(--peach)}
+.dl .lv{opacity:0;transform:scale(.72);transition:opacity .7s ease,transform 1s cubic-bezier(.5,0,.2,1);pointer-events:none}
+.dl .lv.on{opacity:1;transform:none}
+.dl .lv.past{opacity:0;transform:scale(2.2)}
+.dl .lv.snap{transition:none}
+.dl-tbl{fill:rgba(28,44,64,.9);stroke:rgba(190,215,255,.3);stroke-width:.5}
+.dl-hi{fill:rgba(243,175,138,.16);stroke:rgba(243,175,138,.6)}
+.dl-mod{fill:#1C2C40;stroke:rgba(190,215,255,.3);stroke-width:.6}
+.dl-lbl{fill:rgba(255,255,255,.7);font:500 10px var(--f-mono)}
+.dl-cap{fill:var(--fg-2);font:500 11px var(--f-mono)}
+.dl-name{fill:var(--fg);font:600 15px var(--f-display)}
+.dl-row{fill:var(--fg);font:500 12px var(--f-display)}
+.dl-sub{fill:var(--fg-2);font:400 12px var(--f-display)}
+.dl-ring{animation:ring 2.4s ease-out infinite}
+@keyframes ring{0%,100%{stroke-opacity:1}50%{stroke-opacity:.35}}
+.dl-steps{display:flex;gap:6px;margin-top:10px}
+.dl-steps span{width:22px;height:3px;border-radius:2px;background:var(--line);transition:background .4s}
+.dl-steps span.on{background:var(--peach)}
+/* feature A */
+.fa-tbl{fill:#1C2C40;stroke:rgba(190,215,255,.35);stroke-width:.8;transition:fill .4s}
+.fa-tbl.sh{fill:#0B1119}
+.fa-mid{stroke:rgba(0,0,0,.6);stroke-width:1}
+.fa-flag{fill:rgba(255,160,70,.55);stroke:#FFB067;stroke-width:1.2;transition:opacity .3s}
+.fa-flag.wait{opacity:.35}
+/* feature B */
+.board{position:relative;aspect-ratio:480/300;width:100%;border-radius:10px;overflow:hidden;background:#0E1823}
+.board .bsvg{position:absolute;inset:0;width:100%;height:100%}
+.bcard{position:absolute;background:var(--glass);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.14);border-radius:8px;font-size:clamp(8px,1.15vw,11px);color:rgba(255,255,255,.78);line-height:1.35;padding:6px 8px;box-shadow:0 10px 26px rgba(0,0,0,.4)}
+.bcard b{color:#fff;font-weight:600}
+.bcard img{width:100%;border-radius:4px;margin:4px 0;aspect-ratio:16/9;object-fit:cover}
+.bcard.sticky{background:rgba(255,226,160,.16);border-color:rgba(255,226,160,.3)}
+.reply{animation:pop 9s ease-in-out infinite}
+@keyframes pop{0%,62%{opacity:1;transform:none}70%{opacity:0;transform:translateY(4px)}80%{opacity:0;transform:translateY(4px)}88%,100%{opacity:1;transform:none}}
+.drawlink{stroke-dasharray:240;animation:draw 9s ease-in-out infinite}
+@keyframes draw{0%,55%{stroke-dashoffset:0;opacity:1}62%{opacity:0;stroke-dashoffset:0}66%{opacity:0;stroke-dashoffset:240}68%{opacity:1;stroke-dashoffset:240}90%,100%{stroke-dashoffset:0;opacity:1}}
+.cursor{animation:cur 9s ease-in-out infinite}
+@keyframes cur{0%,55%{transform:translate(0,0)}68%{transform:translate(-168px,-58px)}90%,100%{transform:translate(0,0)}}
+/* feature C */
+.br{transition:opacity .3s}
+.sld .off .slf{stroke:rgba(255,255,255,.25);animation-play-state:paused}
+.sld .bk-open{display:none}
+.sld .off .bk-open{display:inline}
+.sld .off .bk-closed{display:none}
+.sld .trace{opacity:0;transition:opacity .4s}
+.sld.tripped .trace{opacity:1}
+.sld .tripmsg{opacity:0;transition:opacity .4s}
+.sld.tripped .tripmsg{opacity:1}
+
+/* who + partners */
+.who{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.who article{background:var(--surface);border:1px solid var(--line-2);border-radius:16px;padding:28px;display:grid;gap:12px;align-content:start}
+.who h3{font-size:22px}
+.who p{color:var(--fg-2)}
+.who ul{margin:6px 0 0;padding-left:18px;color:#C9D1DC;font-size:15px;display:grid;gap:6px}
+@media (max-width:760px){.who{grid-template-columns:minmax(0,1fr)}}
+.partners{margin-top:56px;padding-top:32px;border-top:1px solid var(--line-2);display:grid;gap:28px}
+.partners .lbl2{font-size:13px;color:var(--fg-3)}
+.pstrip{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:40px}
+.plogo-set{display:flex;flex-wrap:wrap;gap:32px 64px;align-items:flex-start}
+.plogo{margin:0;display:grid;gap:14px}
+.plogo img{height:44px;width:auto}
+.plogo figcaption{font-size:14px;color:var(--fg-2)}
+.pfigs{border-left:1px solid var(--line);padding:8px 0 8px 48px;display:grid;gap:12px}
+.pfig-lbl{font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-2)}
+.pfig-row{display:flex;flex-wrap:wrap;gap:12px 48px;align-items:baseline}
+.pfig{display:flex;align-items:baseline;gap:8px}
+.pfig .n{font-size:clamp(44px,5vw,64px);font-weight:500;letter-spacing:-.03em;line-height:1;color:var(--fg);font-variant-numeric:tabular-nums}
+.pfig .u{font-size:18px;color:var(--fg-2)}
+@media (max-width:900px){.pstrip{grid-template-columns:minmax(0,1fr);gap:28px}.pfigs{border-left:0;border-top:1px solid var(--line);padding:28px 0 0}}
+@media (max-width:480px){.plogo img{height:36px}}
+
+/* contact */
+.contact{text-align:left;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:32px;align-items:end}
+.contact h2{font-size:clamp(32px,4vw,52px);line-height:1.05}
+.mailrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:24px}
+.mail{font-family:var(--f-mono);font-size:18px;padding:10px 16px;border:1px solid var(--line);border-radius:10px;user-select:all}
+@media (max-width:760px){.contact{grid-template-columns:minmax(0,1fr)}}
+
+/* team */
+.team{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.person{background:var(--surface);border:1px solid var(--line-2);border-radius:16px;padding:24px;display:grid;gap:16px;align-content:start}
+.person img{width:112px;height:112px;border-radius:50%;object-fit:cover;border:1px solid var(--line)}
+.person h3{font-size:22px}
+.person .role{font-family:var(--f-mono);font-size:12px;color:var(--peach);text-transform:uppercase;letter-spacing:.06em}
+.person .school{color:var(--fg-2);font-size:15px}
+.person > div{display:grid;gap:4px}
+@media (max-width:900px){.team{grid-template-columns:minmax(0,1fr)}.person{grid-template-columns:96px minmax(0,1fr);column-gap:20px;row-gap:6px;align-items:center;padding:20px}.person img{grid-row:span 2;width:96px;height:96px}.person > div,.person .school{grid-column:2}.person > div{align-self:end}.person .school{align-self:start}}
+@media (max-width:420px){.person{grid-template-columns:72px minmax(0,1fr)}.person img{width:72px;height:72px}.person h3{font-size:19px}}
+
+/* trajectory */
+.tl{list-style:none;margin:0;padding:0;position:relative;display:grid;gap:0}
+.tl::before{content:"";position:absolute;left:150px;top:6px;bottom:6px;width:1px;background:var(--line)}
+.tl li{display:grid;grid-template-columns:130px 40px minmax(0,1fr);padding-block:18px}
+.tl .when{font-family:var(--f-mono);font-size:13px;color:var(--fg-2);text-align:right;padding-top:2px}
+.tl .pin{width:11px;height:11px;border-radius:50%;background:var(--ground);border:2px solid var(--peach);margin:5px auto 0}
+.tl li.next .pin{border-color:var(--fg-3);border-style:dashed}
+.tl h3{font-size:18px;margin-bottom:4px}
+.tl p{color:var(--fg-2);font-size:15px;max-width:60ch}
+.tl .tag{font-family:var(--f-mono);font-size:11px;color:var(--fg-3);margin-top:6px}
+@media (max-width:560px){.tl::before{left:6px}.tl li{grid-template-columns:24px minmax(0,1fr)}.tl .pin{grid-row:span 2;margin:4px 0 0}.tl .when{text-align:left;grid-column:2}.tl .body{grid-column:2}}
+
+footer{border-top:1px solid var(--line-2);padding-block:40px;color:var(--fg-3);font-size:13px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center}
+[data-view][hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+
+<a href="#main" class="btn btn-ghost" style="position:absolute;left:-9999px" onfocus="this.style.left='16px'" onblur="this.style.left='-9999px'"><span class="pt">Pular para o conteúdo</span><span class="en">Skip to content</span></a>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="SIGHT"><img src="img/mark.png" alt=""><span>Sight</span></a>
+    <nav class="links" aria-label="Main">
+      <a href="#platform"><span class="pt">Plataforma</span><span class="en">Platform</span></a>
+      <a href="#twin"><span class="pt">Gêmeo digital</span><span class="en">Digital twin</span></a>
+      <a href="#team" data-nav="team"><span class="pt">Equipe</span><span class="en">Team</span></a>
+      <a href="#trajectory" data-nav="trajectory"><span class="pt">Trajetória</span><span class="en">Trajectory</span></a>
+      <a href="#contact"><span class="pt">Contato</span><span class="en">Contact</span></a>
+    </nav>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" id="lang-pt" data-set-lang="pt" aria-pressed="true">PT</button>
+      <button type="button" id="lang-en" data-set-lang="en" aria-pressed="false">EN</button>
+    </div>
+    <a class="btn btn-primary" href="#contact"><span class="pt">Fale com a gente</span><span class="en">Talk to us</span></a>
+  </div>
 </header>
-<main id="conteudo">
-  <section class="hero wrap" aria-labelledby="hero-title">
-    <!-- ÁREA RESERVADA PARA VÍDEO DE FUNDO: inserir aqui um vídeo decorativo,
-         sem áudio, mantendo o contraste do texto e a ilustração como alternativa.
-         Consulte as orientações de acessibilidade e tamanho no README.md. -->
-    <div class="hero-video-slot" id="hero-video-slot" aria-hidden="true"></div>
+
+<main id="main">
+<!-- ======================= HOME ======================= -->
+<div data-view="home">
+<section class="hero" id="top">
+  <div class="wrap">
     <div class="hero-copy">
-      <p class="eyebrow"><span class="tiny-cross" aria-hidden="true">+</span> Dados para a operação solar</p>
-      <h1 id="hero-title">Sua usina.<br>Cada <span class="highlight">módulo.</span><br>Uma só visão.</h1>
-      <p class="hero-description">A SIGHT conecta dados de SCADA, O&M e inspeções em um gêmeo digital da usina para identificar e acompanhar defeitos em cada módulo.</p>
-      <a class="button" href="#contato">Fale com a SIGHT <span aria-hidden="true">↗</span></a>
+      <div class="kicker"><span class="pt">Dados conectados para a operação solar</span><span class="en">Connected data for solar operations</span></div>
+      <h1><span class="pt">Uma usina. Todas as fontes. <em>A evidência por trás de cada alerta.</em></span><span class="en">One plant. Every source. <em>The evidence behind every alert.</em></span></h1>
+      <p class="lead"><span class="pt">A SIGHT reúne SCADA, inversores, histórico de O&amp;M, inspeções e dados financeiros em uma memória única da usina. O Brain cruza essas fontes e mostra o que está custando energia, com a prova.</span><span class="en">SIGHT brings SCADA, inverter data, O&amp;M history, inspections and financial data into one memory of the plant. The Brain cross-checks the sources and shows what is costing energy, with the proof.</span></p>
+      <div class="ctas">
+        <a class="btn btn-primary" href="#contact"><span class="pt">Fale com a gente</span><span class="en">Talk to us</span></a>
+        <a class="btn btn-ghost" href="#platform"><span class="pt">Veja a plataforma</span><span class="en">See the platform</span></a>
+      </div>
+      <div class="partners-line"><span class="pt">Construído em campo com</span><span class="en">Built in the field with</span> <span class="plogos"><img src="img/logo-gera.png" alt="Grupo Gera" class="pl-gera" width="359" height="101"><img src="img/logo-gerar.png" alt="Gerar" class="pl-gerar" width="364" height="104"></span></div>
     </div>
-    <figure class="plant-visual">
-      <div class="visual-top"><span>DA USINA AO MÓDULO</span><span aria-hidden="true">[ + ]</span></div>
-      <div class="plant-drawing">
-        <div class="orbit orbit-one" aria-hidden="true"></div><div class="orbit orbit-two" aria-hidden="true"></div>
-        <svg class="plant-svg" viewBox="0 0 600 420" aria-hidden="true">
-          <defs><pattern id="module" width="46" height="58" patternUnits="userSpaceOnUse"><rect class="panel" x="3" y="3" width="39" height="50" rx="1"/><path class="panel-grid" d="M16 4v48M29 4v48M4 28h37"/></pattern></defs>
-          <path class="plant-base" d="M40 320 303 399 563 244 304 165Z"/>
-          <g transform="translate(28 157) matrix(.78 .27 -.53 .48 160 -100)"><rect width="230" height="174" fill="url(#module)"/><rect x="262" width="230" height="174" fill="url(#module)"/><rect y="201" width="230" height="174" fill="url(#module)"/><rect x="262" y="201" width="230" height="174" fill="url(#module)"/><rect class="selected-panel" x="357" y="61" width="39" height="50" rx="1"/><path class="selected-panel-grid" d="M370 62v48M383 62v48M358 86h37"/></g>
-          <path class="callout" d="M436 200v-84H333"/><circle class="callout-dot" cx="436" cy="200" r="4"/>
-          <path class="drawing-mark" d="M80 351h40m-20-20v40M495 65h30m-15-15v30"/>
+
+    <div>
+    <div class="scene-wrap" id="sceneWrap">
+      <div class="scene" id="scene" aria-hidden="true">
+        <img class="sat" src="img/sat.jpg" alt="">
+        <div class="puff"></div><div class="puff puff2"></div>
+
+        <svg viewBox="15 10 125 250" style="position:absolute;left:300px;top:30px;width:330px;height:660px;overflow:visible">
+          <polygon class="fence" points="84.87,16.9 24.94,16.9 24.94,252.7 129.72,253.89 129.72,80.35"/>
+          <g>
+            <rect class="tbl" x="70.9" y="23.06" width="4.2" height="71.65"/><rect class="tbl" x="63.8" y="23.06" width="4.2" height="71.65"/><rect class="tbl" x="57" y="23.06" width="4.2" height="71.65"/><rect class="tbl" x="50.2" y="23.06" width="4.2" height="71.65"/><rect class="tbl" x="43.7" y="23.06" width="4.2" height="71.65"/><rect class="tbl" x="36.6" y="23.06" width="4.2" height="71.65"/><rect class="tbl" x="29.8" y="23.06" width="4.2" height="71.65"/>
+            <rect class="tbl" x="118.2" y="99.7" width="4.2" height="71.65"/><rect class="tbl" x="111.4" y="99.7" width="4.2" height="71.65"/><rect class="tbl" x="104.9" y="99.7" width="4.2" height="71.65"/><rect class="tbl" x="97.8" y="99.7" width="4.2" height="71.65"/><rect class="tbl" x="91" y="99.7" width="4.2" height="71.65"/><rect class="tbl" x="84.2" y="99.7" width="4.2" height="71.65"/><rect class="tbl" x="77.4" y="99.7" width="4.2" height="71.65"/><rect class="tbl" x="70.9" y="99.7" width="4.2" height="71.65"/><rect class="tbl" x="63.8" y="99.7" width="4.2" height="71.65"/><rect class="tbl" x="57.3" y="99.7" width="4.2" height="71.65"/><rect class="tbl" x="50.2" y="99.7" width="4.2" height="71.65"/><rect class="tbl" x="43.7" y="99.7" width="4.2" height="71.65"/><rect class="tbl" x="36.6" y="99.7" width="4.2" height="71.65"/><rect class="tbl" x="29.8" y="99.7" width="4.2" height="71.65"/>
+            <rect class="tbl" x="118.2" y="176.35" width="4.2" height="71.65"/><rect class="tbl" x="111.4" y="176.35" width="4.2" height="71.65"/><rect class="tbl" x="104.9" y="176.35" width="4.2" height="71.65"/><rect class="tbl" x="97.8" y="176.35" width="4.2" height="71.65"/><rect class="tbl" x="91" y="176.35" width="4.2" height="71.65"/><rect class="tbl" x="84.2" y="176.35" width="4.2" height="71.65"/><rect class="tbl" x="77.4" y="176.35" width="4.2" height="71.65"/><rect class="tbl-s" x="70.6" y="176.35" width="4.2" height="71.65"/><rect class="tbl-s" x="63.8" y="176.35" width="4.2" height="71.65"/><rect class="tbl-s" x="56.1" y="176.35" width="4.2" height="71.65"/><rect class="tbl-s" x="49" y="176.35" width="4.2" height="71.65"/><rect class="tbl-s" x="42.1" y="176.35" width="4.2" height="71.65"/><rect class="tbl-s" x="35.2" y="176.35" width="4.2" height="71.65"/><rect class="tbl-s" x="28.3" y="176.35" width="4.2" height="71.65"/>
+            <rect class="mid" x="29" y="58.7" width="47" height="0.3"/><rect class="mid" x="29" y="135.35" width="94" height="0.3"/><rect class="mid" x="27.5" y="212" width="95.5" height="0.3"/>
+          </g>
+          <path class="ac" d="M107.9 172.5 H126 V83.8 H108"/>
+          <path class="flow" d="M60.3 173.6 H126"/>
+          <path class="flow" d="M46.7 96.6 H126"/>
+          <path class="mv" d="M108 83.8 V30.7 H87.9 M87.9 30.7 V12"/>
+          <rect class="flag" x="63.8" y="58.9" width="4.2" height="35.8"/>
+          <g class="cloudg"><path class="cloud" d="M30 170 C45 160 70 163 80 178 C90 195 84 220 78 236 C72 255 50 262 36 252 C20 242 18 222 24 205 C14 190 18 176 30 170 Z"/></g>
+          <rect class="eq" x="106.6" y="171.4" width="2.6" height="2.2"/><rect class="eq" x="59" y="171.4" width="2.6" height="2.2"/><rect class="eq" x="72.6" y="94.8" width="2.6" height="2.2"/><rect class="eq" x="45.4" y="94.8" width="2.6" height="2.2"/>
+          <rect class="eq" x="105.9" y="81.8" width="4" height="4"/><rect class="eq" x="85.6" y="28.4" width="4.6" height="4.6"/><rect class="eq" x="90.6" y="62" width="4.4" height="4"/>
+          <text class="lbl" x="110.5" y="179">INV01</text><text class="lbl" x="62.5" y="168.5">INV02</text><text class="lbl" x="76.5" y="92">INV03</text><text class="lbl" x="34" y="92">INV04</text><text class="lbl" x="111" y="81">TR-01</text><text class="lbl" x="92" y="29"><tspan class="pt">Cabine</tspan><tspan class="en">Cabin</tspan></text>
         </svg>
-        <div class="module-label"><span class="status-dot" aria-hidden="true"></span>Histórico por módulo</div>
+
+        <svg id="links" viewBox="0 0 1000 836" style="position:absolute;inset:0;width:1000px;height:836px;pointer-events:none">
+          <path id="l1" class="mine" d="M276 150 C350 150 360 206 426 206"/>
+          <path class="auto" d="M276 420 C350 420 380 236 432 214"/>
+          <path id="l2" class="mine" d="M664 110 C560 110 520 200 444 206"/>
+          <path class="auto" d="M664 340 C560 340 500 459 424 459"/>
+          <path id="l3" class="mine" d="M664 540 C590 540 540 562 476 562"/>
+          <circle class="dot" r="3" cx="-50" cy="-50"><animateMotion dur="3.2s" repeatCount="indefinite"><mpath href="#l1"/></animateMotion></circle>
+          <circle class="dot" r="3" cx="-50" cy="-50"><animateMotion dur="3.6s" begin="1s" repeatCount="indefinite"><mpath href="#l2"/></animateMotion></circle>
+          <circle class="dot" r="3" cx="-50" cy="-50"><animateMotion dur="2.8s" begin="2s" repeatCount="indefinite"><mpath href="#l3"/></animateMotion></circle>
+          <circle class="dot" cx="276" cy="150" r="3"/><circle class="dot" cx="664" cy="110" r="3"/><circle class="dot" cx="664" cy="540" r="3"/>
+        </svg>
+
+        <div class="flagchip" style="left:446px;top:195px">INV3-ST12 <span class="pt">−7,4%</span><span class="en">−7.4%</span></div>
+        <div class="card" style="left:300px;top:704px;width:330px;padding:10px 14px"><b style="color:#fff;font-weight:500"><span class="pt">Nuvem · 14 strings na sombra · −128 kW</span><span class="en">Cloud · 14 strings shaded · −128 kW</span></b><br><span style="color:rgba(255,255,255,.5)"><span class="pt">Sombra prevista, nenhum alerta gerado</span><span class="en">Modeled shade, no alert raised</span></span></div>
+
+        <div class="card" style="left:16px;top:24px;width:260px">
+          <div class="ch"><span class="chip chip-s3">S3</span><span class="pt">INV3-ST12 abaixo do esperado</span><span class="en">INV3-ST12 below expected</span></div>
+          <div class="cb">
+            <div class="mono" style="font-size:11px;color:rgba(255,255,255,.5);margin-bottom:10px"><span class="pt">−7,4% há 52 min · POA 862 W/m²</span><span class="en">−7.4% for 52 min · POA 862 W/m²</span></div>
+            <div style="display:flex;gap:6px;margin-bottom:12px"><img src="img/ir.jpg" alt="" style="width:113px;height:76px;object-fit:cover;border-radius:8px"><img src="img/rgb.jpg" alt="" style="width:113px;height:76px;object-fit:cover;border-radius:8px"></div>
+            <div class="kv">
+              <span><span class="pt">IR aéreo · ponto quente na caixa de junção</span><span class="en">Aerial IR · hot spot at junction box</span></span><span class="mono" style="color:rgba(255,255,255,.5)"><span class="pt">fev</span><span class="en">Feb</span></span>
+              <span><span class="pt">Ordens de serviço nesta string</span><span class="en">Work orders on this string</span></span><span class="mono" style="color:rgba(255,255,255,.5)">2</span>
+              <span><span class="pt">Curva IV</span><span class="en">IV curve</span></span><span class="mono" style="color:rgba(255,255,255,.5)"><span class="pt">não medida</span><span class="en">not traced</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="left:16px;top:300px;width:260px">
+          <div class="ch"><span class="pt">Nota da equipe</span><span class="en">Team note</span><span class="r">Rafael M. · 10:12</span></div>
+          <div class="cb">
+            <img src="img/rgb.jpg" alt="" style="width:230px;height:116px;object-fit:cover;border-radius:8px;margin-bottom:8px">
+            <div style="color:#fff;margin-bottom:10px"><span class="pt">Tampa da caixa de junção trincada na mesa R1C02. Marcas de água por dentro.</span><span class="en">Junction box lid cracked on table R1C02. Water marks inside.</span></div>
+            <div style="border-top:1px solid rgba(255,255,255,.1);padding-top:8px;display:grid;gap:8px">
+              <div><b style="color:#fff;font-weight:500">Ana S.</b> <span class="pt">Bate com o ponto quente do IR de fevereiro. Abrindo OS.</span><span class="en">Matches the Feb IR hot spot. Opening a work order.</span></div>
+              <div><b style="color:#fff;font-weight:500"><span class="pt">Você</span><span class="en">You</span></b> <span class="pt">Levar uma tampa reserva na quinta.</span><span class="en">Bring a spare lid Thursday.</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="left:16px;top:660px;width:260px">
+          <div class="ch"><span class="pt">Usina agora</span><span class="en">Plant now</span><span class="r mono" id="clock">10:40</span></div>
+          <div class="cb kv">
+            <span><span class="pt">Potência ativa</span><span class="en">Active power</span></span><span class="v" id="kw">799 kW</span>
+            <span><span class="pt">Esperado</span><span class="en">Expected</span></span><span class="v">927 kW</span>
+            <span><span class="pt">Perda por nuvem, prevista</span><span class="en">Cloud loss, modeled</span></span><span class="v">128 kW</span>
+            <span><span class="pt">Irradiância POA</span><span class="en">POA irradiance</span></span><span class="v">862 W/m²</span>
+            <span>PR</span><span class="v"><span class="pt">81,6%</span><span class="en">81.6%</span></span>
+          </div>
+        </div>
+
+        <div class="card" style="left:664px;top:24px;width:320px">
+          <div class="ch"><span class="pt">Corrente INV3-ST12</span><span class="en">INV3-ST12 current</span><span class="r mono"><span class="pt">14,1 A vs 15,2 A</span><span class="en">14.1 A vs 15.2 A</span></span></div>
+          <div class="cb" style="padding-inline:16px">
+            <svg viewBox="0 0 288 100" style="width:288px;height:100px;display:block">
+              <polygon class="band" points="0,87 24,67.6 48,49.5 72,34 96,22 120,14.6 144,12 168,14.6 192,22 216,34 240,49.5 264,67.6 288,87 288,93 264,73.6 240,55.5 216,40 192,28 168,20.6 144,18 120,20.6 96,28 72,40 48,55.5 24,76.6 0,93"/>
+              <path class="exp" d="M0 90 L24 70.6 L48 52.5 L72 37 L96 25 L120 17.6 L144 15 L168 17.6 L192 25 L216 37 L240 52.5 L264 70.6 L288 90"/>
+              <path class="act" d="M0 90 L24 70.8 L48 52.8 L72 37.4 L92 27.6 L96 29.8 L112 25.5"/>
+              <path d="M112 4 V96" style="stroke:rgba(255,255,255,.3);stroke-width:1"/>
+            </svg>
+            <div class="mono" style="display:flex;justify-content:space-between;font-size:10px;margin-top:4px;color:rgba(255,255,255,.5)"><span>06:00</span><span><span class="pt">agora</span><span class="en">now</span></span><span>18:00</span></div>
+          </div>
+        </div>
+
+        <div class="card" style="left:664px;top:236px;width:320px">
+          <div class="ch"><span class="pt">Unifilar · fluxo de potência</span><span class="en">Single-line · power flow</span></div>
+          <div class="cb" style="padding-inline:16px">
+            <svg viewBox="0 0 288 160" style="width:288px;height:160px;display:block">
+              <path class="slf" d="M28 22 H118 M28 60 H118 M28 98 H118 M28 136 H118"/>
+              <path class="sl" d="M140 14 V144"/>
+              <path class="slf" d="M140 79 H176 M216 79 H238 M254 79 H284"/>
+              <rect class="sym" x="6" y="14" width="22" height="16"/><rect class="sym" x="6" y="52" width="22" height="16"/><rect class="sym" x="6" y="90" width="22" height="16"/><rect class="sym" x="6" y="128" width="22" height="16"/>
+              <rect class="sym" x="66" y="12" width="20" height="20"/><rect class="sym" x="66" y="50" width="20" height="20"/><rect class="sym" x="66" y="88" width="20" height="20"/><rect class="sym" x="66" y="126" width="20" height="20"/>
+              <path class="sl" d="M66 32 L86 12 M66 70 L86 50 M66 108 L86 88 M66 146 L86 126 M6 30 L28 14 M6 68 L28 52 M6 106 L28 90 M6 144 L28 128"/>
+              <circle class="sym" cx="188" cy="79" r="12"/><circle class="sym" cx="204" cy="79" r="12"/>
+              <rect class="sym" x="238" y="72" width="16" height="14"/>
+              <text class="slk" x="92" y="18">232</text><text class="slt" x="92" y="56"><tspan class="pt">106 · nuvem</tspan><tspan class="en">106 · cloud</tspan></text><text class="slk" x="92" y="94">229</text><text class="slk" x="92" y="132">232</text>
+              <text class="slt" x="128" y="156">QGBT</text><text class="slk" x="150" y="70">799</text><text class="slt" x="182" y="104">TR-01</text><text class="slk" x="252" y="66">791 kW</text>
+            </svg>
+          </div>
+        </div>
+
+        <div class="card" style="left:664px;top:490px;width:236px;background:rgba(255,236,190,.16);border-color:rgba(255,226,160,.3)">
+          <div class="ch"><span class="pt">Nota</span><span class="en">Note</span><span class="r"><span class="pt">Só eu</span><span class="en">Only me</span></span></div>
+          <div class="cb" style="color:#fff;padding-top:8px"><span class="pt">Perda por nuvem é prevista, então sem alerta. Rever o INV02 depois que passar.</span><span class="en">Cloud loss is modeled, so no alert. Recheck INV02 after it passes.</span></div>
+        </div>
+
+        <div style="position:absolute;left:664px;top:704px;width:320px;display:flex;gap:20px;font-size:12px;color:rgba(255,255,255,.55);align-items:center">
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:22px;height:2px;background:#7FB2FF;box-shadow:0 0 6px #7FB2FF"></span><span class="pt">Meus vínculos</span><span class="en">My links</span></span>
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:22px;height:0;border-top:1.5px dashed rgba(255,255,255,.45)"></span><span class="pt">Automáticos</span><span class="en">Auto links</span></span>
+        </div>
       </div>
-      <div class="visual-sources"><span>SCADA + O&M</span><span class="source-plus" aria-hidden="true">+</span><span>INSPEÇÕES</span></div>
-      <figcaption>Ilustração conceitual, sem dados de uma usina real.</figcaption>
-    </figure>
-    <div class="hero-bottom"><span>OPERAÇÃO E INSPEÇÃO NO MESMO CONTEXTO</span><a href="#desafio" aria-label="Conheça o desafio">↓</a></div>
-  </section>
-  <section class="section wrap" id="desafio" aria-labelledby="problem-title">
-    <div class="section-label"><span>01 /</span><span>O DESAFIO</span></div>
-    <div class="section-content">
-      <h2 id="problem-title">Dados separados. <br>Defeitos sem acompanhamento.</h2>
-      <p class="lead">O SCADA registra a operação. As inspeções revelam as condições dos módulos. Sem cruzar essas informações, os defeitos são identificados tarde e sua evolução fica sem acompanhamento.</p>
-      <div class="silos">
-        <div><span class="small-label">OPERAÇÃO</span><h3>Desempenho da usina</h3><p>Dados de SCADA e registros de O&M.</p></div>
-        <span class="disconnect" aria-hidden="true">··· / ···</span>
-        <div><span class="small-label">INSPEÇÕES</span><h3>Condição dos módulos</h3><p>Imagens de termografia e eletroluminescência.</p></div>
+    </div>
+    <p class="scene-note"><span class="pt">Dados de exemplo de uma usina piloto anonimizada de 1,3 MWp.</span><span class="en">Example data from an anonymized 1.3 MWp pilot plant.</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- problem -->
+<section class="block" id="problem">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker"><span class="pt">O problema</span><span class="en">The problem</span></div>
+      <h2><span class="pt">A usina já tem os dados. Eles só não conversam entre si.</span><span class="en">The plant already has the data. The sources just don't talk to each other.</span></h2>
+      <p><span class="pt">Desempenho fica no portal do inversor, o que foi feito fica no CMMS, a condição dos módulos fica num PDF de inspeção, o custo fica numa planilha e o que o técnico viu fica no WhatsApp. E o mesmo equipamento tem um nome diferente em cada sistema. Defeitos aparecem tarde, a mesma falha é corrigida várias vezes e ninguém consegue provar qual perda importa mais.</span><span class="en">Performance sits in the inverter portal, what was done sits in the CMMS, module condition sits in an inspection PDF, cost sits in a spreadsheet and what the technician saw sits in WhatsApp. And the same piece of equipment has a different name in every system. Defects show up late, the same fault gets fixed again and again, and nobody can prove which loss matters most.</span></p>
+    </div>
+    <div class="islands">
+      <div class="island"><span class="src">SCADA · <span class="pt">inversores</span><span class="en">inverters</span></span><h3><span class="pt">Operação</span><span class="en">Operation</span></h3><p><span class="pt">Potência, alarmes e strings, a cada 5 minutos.</span><span class="en">Power, alarms and strings, every 5 minutes.</span></p></div>
+      <div class="island"><span class="src">CMMS · <span class="pt">relatórios</span><span class="en">reports</span></span><h3>O&amp;M</h3><p><span class="pt">Ordens de serviço, rotas preventivas e testes anuais.</span><span class="en">Work orders, preventive routes and annual tests.</span></p></div>
+      <div class="island"><span class="src">IR · RGB · EL</span><h3><span class="pt">Inspeções</span><span class="en">Inspections</span></h3><p><span class="pt">Imagens de drone e laudos de fornecedores diferentes.</span><span class="en">Drone imagery and reports from different providers.</span></p></div>
+      <div class="island"><span class="src"><span class="pt">Contratos · financeiro</span><span class="en">Contracts · finance</span></span><h3><span class="pt">Dinheiro</span><span class="en">Money</span></h3><p><span class="pt">Tarifa, garantias e quanto cada falha custa.</span><span class="en">Tariff, warranties and what each fault costs.</span></p></div>
+      <div class="island"><span class="src"><span class="pt">Campo · WhatsApp, notas</span><span class="en">Field · WhatsApp, notes</span></span><h3><span class="pt">Equipe</span><span class="en">Team</span></h3><p><span class="pt">O que o técnico viu e combinou com a equipe.</span><span class="en">What the technician saw and agreed with the team.</span></p></div>
+    </div>
+    <p class="disconnect"><span class="pt">Cinco sistemas sobre a mesma usina, quase sempre <em>sem nenhuma ligação</em> entre eles.</span><span class="en">Five systems describing the same plant, almost <em>never connected</em> to each other.</span></p>
+  </div>
+</section>
+
+<!-- platform -->
+<section class="block" id="platform">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker"><span class="pt">A plataforma</span><span class="en">The platform</span></div>
+      <h2><span class="pt">Três camadas. Uma usina inteira.</span><span class="en">Three layers. One whole plant.</span></h2>
+      <p><span class="pt">A Memória guarda tudo, o Brain entende e as Interfaces colocam isso na mão de quem opera. Cada camada funciona com as ferramentas que você já tem.</span><span class="en">Memory keeps everything, the Brain makes sense of it, and the Interfaces put it in the hands of the people who run the plant. Each layer works with the tools you already have.</span></p>
+    </div>
+    <div class="layers">
+
+      <article class="layer" id="memory">
+        <div>
+          <div class="idx">01</div>
+          <h3><small><span class="pt">Memória</span><span class="en">Memory</span></small><span class="pt">Cada fonte, limpa e no lugar certo.</span><span class="en">Every source, clean and in the right place.</span></h3>
+          <p><span class="pt">Recebe cada fonte do jeito que ela vem: APIs, planilhas, PDFs de inspeção, ordens de serviço. Limpa com regras escritas e guarda o histórico de cada componente, do inversor ao módulo.</span><span class="en">Takes in every source the way it comes: APIs, spreadsheets, inspection PDFs, work orders. Cleans it with written rules and keeps the history of every component, from inverter to module.</span></p>
+          <ul>
+            <li><span class="pt">Sem caixa-preta: cada correção segue uma regra que dá para ler</span><span class="en">No black box: every correction follows a rule you can read</span></li>
+            <li><span class="pt">Funciona com o fornecedor de inspeção que você já usa</span><span class="en">Works with the inspection provider you already use</span></li>
+            <li><span class="pt">Um ID por componente, ligando SCADA, CMMS e imagens</span><span class="en">One ID per component, joining SCADA, CMMS and imagery</span></li>
+            <li><span class="pt">Sinaliza leituras impossíveis, travadas ou ausentes antes que entrem nos indicadores</span><span class="en">Flags impossible, frozen or missing readings before they reach any metric</span></li>
+          </ul>
+        </div>
+        <div class="viz" aria-hidden="true">
+          <svg viewBox="0 0 520 300">
+            <g font-family="JetBrains Mono, monospace" font-size="11" fill="#C9D1DC">
+              <rect x="6" y="12" width="128" height="28" rx="14" fill="#182432" stroke="rgba(242,244,247,.14)"/><text x="22" y="30">FusionSolar</text>
+              <rect x="6" y="52" width="128" height="28" rx="14" fill="#182432" stroke="rgba(242,244,247,.14)"/><text x="22" y="70">SCADA</text>
+              <rect x="6" y="92" width="128" height="28" rx="14" fill="#182432" stroke="rgba(242,244,247,.14)"/><text x="22" y="110">CMMS</text>
+              <rect x="6" y="132" width="128" height="28" rx="14" fill="#182432" stroke="rgba(242,244,247,.14)"/><text x="22" y="150"><tspan class="pt">Laudo IR (PDF)</tspan><tspan class="en">IR report (PDF)</tspan></text>
+              <rect x="6" y="172" width="128" height="28" rx="14" fill="#182432" stroke="rgba(242,244,247,.14)"/><text x="22" y="190"><tspan class="pt">Testes de campo</tspan><tspan class="en">Field tests</tspan></text>
+              <rect x="6" y="212" width="128" height="28" rx="14" fill="#182432" stroke="rgba(242,244,247,.14)"/><text x="22" y="230"><tspan class="pt">Meteorologia</tspan><tspan class="en">Weather station</tspan></text>
+              <rect x="6" y="252" width="128" height="28" rx="14" fill="#182432" stroke="rgba(242,244,247,.14)"/><text x="22" y="270"><tspan class="pt">Financeiro</tspan><tspan class="en">Finance</tspan></text>
+            </g>
+            <g fill="none" stroke="rgba(243,175,138,.35)" stroke-width="1.2">
+              <path id="m1" d="M134 26 C220 26 220 150 300 150"/><path id="m2" d="M134 66 C220 66 220 150 300 150"/><path id="m3" d="M134 106 C220 106 220 150 300 150"/><path id="m4" d="M134 146 C220 146 220 150 300 150"/><path id="m5" d="M134 186 C220 186 220 150 300 150"/><path id="m6" d="M134 226 C220 226 220 150 300 150"/><path id="m7" d="M134 266 C220 266 220 150 300 150"/>
+            </g>
+            <g fill="#F3AF8A">
+              <circle r="3" cx="-50" cy="-50"><animateMotion dur="2.4s" repeatCount="indefinite"><mpath href="#m1"/></animateMotion></circle>
+              <circle r="3" cx="-50" cy="-50"><animateMotion dur="2.4s" begin=".4s" repeatCount="indefinite"><mpath href="#m3"/></animateMotion></circle>
+              <circle r="3" cx="-50" cy="-50"><animateMotion dur="2.4s" begin=".9s" repeatCount="indefinite"><mpath href="#m4"/></animateMotion></circle>
+              <circle r="3" cx="-50" cy="-50"><animateMotion dur="2.4s" begin="1.3s" repeatCount="indefinite"><mpath href="#m6"/></animateMotion></circle>
+              <circle r="3" cx="-50" cy="-50"><animateMotion dur="2.4s" begin="1.8s" repeatCount="indefinite"><mpath href="#m2"/></animateMotion></circle>
+            </g>
+            <rect x="300" y="40" width="214" height="224" rx="10" fill="#121C27" stroke="rgba(242,244,247,.16)"/>
+            <text x="316" y="66" font-family="Instrument Sans, sans-serif" font-size="14" font-weight="600" fill="#F2F4F7">INV3-ST12</text>
+            <text x="316" y="84" font-family="JetBrains Mono, monospace" font-size="10" fill="#6E7C8E"><tspan class="pt">string · 27 módulos · mesa R1C02</tspan><tspan class="en">string · 27 modules · table R1C02</tspan></text>
+            <g font-family="JetBrains Mono, monospace" font-size="10">
+              <line x1="316" y1="96" x2="498" y2="96" stroke="rgba(242,244,247,.08)"/>
+              <circle cx="320" cy="114" r="3" fill="#FFA24D"/><text x="330" y="117" fill="#C9D1DC"><tspan class="pt">fev · IR aéreo: ponto quente</tspan><tspan class="en">Feb · aerial IR: hot spot</tspan></text>
+              <circle cx="320" cy="140" r="3" fill="#9AA7B8"/><text x="330" y="143" fill="#C9D1DC"><tspan class="pt">mai · OS: conector trocado</tspan><tspan class="en">May · WO: connector replaced</tspan></text>
+              <circle cx="320" cy="166" r="3" fill="#9AA7B8"/><text x="330" y="169" fill="#C9D1DC"><tspan class="pt">ago · OS: limpeza da mesa</tspan><tspan class="en">Aug · WO: table cleaned</tspan></text>
+              <circle cx="320" cy="192" r="3" fill="#7FB2FF"/><text x="330" y="195" fill="#C9D1DC"><tspan class="pt">hoje · corrente −7,4%</tspan><tspan class="en">today · current −7.4%</tspan></text>
+              <circle cx="320" cy="218" r="3" fill="#6E7C8E"/><text x="330" y="221" fill="#6E7C8E"><tspan class="pt">curva IV: sem dado</tspan><tspan class="en">IV curve: no data</tspan></text>
+              <text x="316" y="250" fill="#F3AF8A"><tspan class="pt">7 fontes · 1 histórico</tspan><tspan class="en">7 sources · 1 history</tspan></text>
+            </g>
+          </svg>
+        </div>
+      </article>
+
+      <article class="layer" id="brain">
+        <div>
+          <div class="idx">02</div>
+          <h3><small>Brain</small><span class="pt">Encontra o que custa energia, e mostra por quê.</span><span class="en">Finds what costs energy, and shows why.</span></h3>
+          <p><span class="pt">Liga dados relacionados entre fontes, encontra defeitos e a causa provável, e estima a energia em risco. Cada achado vem como evidência, com o grau de confiança e os dados que faltaram. Quem decide é a sua equipe.</span><span class="en">Links related data across sources, finds defects and their likely cause, and estimates the energy at risk. Every finding comes as evidence, with its confidence and the data that was missing. Your team makes the call.</span></p>
+          <ul>
+            <li><span class="pt">Não alarma por nuvem: separa sombra prevista de falha real</span><span class="en">No alarms for clouds: it separates modeled shade from real faults</span></li>
+            <li><span class="pt">Prioriza por energia em risco, não por quantidade de alarmes</span><span class="en">Ranks by energy at risk, not by alarm count</span></li>
+            <li><span class="pt">Aprende com cada usina conectada</span><span class="en">Learns from every connected plant</span></li>
+            <li><span class="pt">Com o histórico de cada ativo, ajuda a antecipar falhas</span><span class="en">With each asset's history, it helps anticipate failures</span></li>
+          </ul>
+        </div>
+        <div class="viz" aria-hidden="true">
+          <svg viewBox="0 0 520 300">
+            <rect x="10" y="10" width="500" height="280" rx="12" fill="#121C27" stroke="rgba(242,244,247,.16)"/>
+            <text x="30" y="40" font-family="JetBrains Mono, monospace" font-size="11" fill="#FFA24D"><tspan class="pt">ACHADO · INV3-ST12</tspan><tspan class="en">FINDING · INV3-ST12</tspan></text>
+            <text x="30" y="66" font-family="Instrument Sans, sans-serif" font-size="16" font-weight="600" fill="#F2F4F7"><tspan class="pt">Provável falha na caixa de junção</tspan><tspan class="en">Likely junction box fault</tspan></text>
+            <text x="30" y="86" font-family="Instrument Sans, sans-serif" font-size="12" fill="#9AA7B8"><tspan class="pt">7,4% abaixo do esperado há 52 min, fora da sombra da nuvem</tspan><tspan class="en">7.4% below expected for 52 min, outside the cloud shade</tspan></text>
+            <text x="30" y="118" font-family="JetBrains Mono, monospace" font-size="10" fill="#6E7C8E"><tspan class="pt">CONFIANÇA</tspan><tspan class="en">CONFIDENCE</tspan></text>
+            <rect x="30" y="126" width="300" height="8" rx="4" fill="rgba(242,244,247,.08)"/>
+            <rect x="30" y="126" width="246" height="8" rx="4" fill="#7FB2FF"><animate attributeName="width" values="246;246;80;246" keyTimes="0;.6;.7;1" dur="8s" repeatCount="indefinite"/></rect>
+            <text x="340" y="134" font-family="JetBrains Mono, monospace" font-size="11" fill="#F2F4F7">0.82</text>
+            <text x="30" y="166" font-family="JetBrains Mono, monospace" font-size="10" fill="#6E7C8E"><tspan class="pt">EVIDÊNCIA</tspan><tspan class="en">EVIDENCE</tspan></text>
+            <g font-family="Instrument Sans, sans-serif" font-size="12" fill="#C9D1DC">
+              <text x="30" y="188">✓ <tspan class="pt">Corrente da string · FusionSolar, 5 min</tspan><tspan class="en">String current · FusionSolar, 5 min</tspan></text>
+              <text x="30" y="208">✓ <tspan class="pt">Ponto quente no IR aéreo de fevereiro</tspan><tspan class="en">Hot spot in the February aerial IR</tspan></text>
+              <text x="30" y="228">✓ <tspan class="pt">2 ordens de serviço na mesma string</tspan><tspan class="en">2 work orders on the same string</tspan></text>
+            </g>
+            <text x="30" y="258" font-family="JetBrains Mono, monospace" font-size="10" fill="#6E7C8E"><tspan class="pt">FALTOU</tspan><tspan class="en">MISSING</tspan></text>
+            <text x="30" y="276" font-family="Instrument Sans, sans-serif" font-size="12" fill="#9AA7B8"><tspan class="pt">Curva IV da string · confirmaria a causa</tspan><tspan class="en">String IV curve · would confirm the cause</tspan></text>
+            <text x="490" y="40" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#F2F4F7"><tspan class="pt">≈ 1,2 kW em risco</tspan><tspan class="en">≈ 1.2 kW at risk</tspan></text>
+          </svg>
+        </div>
+      </article>
+
+      <article class="layer" id="interfaces">
+        <div>
+          <div class="idx">03</div>
+          <h3><small>Interfaces</small><span class="pt">Onde a equipe trabalha.</span><span class="en">Where the team works.</span></h3>
+          <p><span class="pt">Um gêmeo digital da usina, uma linha do tempo de eventos e um assistente de IA que responde citando as fontes. Tudo ligado ao CMMS que você já usa: a SIGHT guarda o problema e a prova, a OS continua no seu sistema.</span><span class="en">A digital twin of the plant, a timeline of events, and an AI assistant that answers with its sources. All linked to the CMMS you already use: SIGHT holds the issue and its proof, the work order stays in your system.</span></p>
+        </div>
+        <div class="uis">
+          <a class="ui" href="#twin" style="text-decoration:none">
+            <div class="thumb"><img src="img/sat.jpg" alt="" style="width:100%;height:100%;object-fit:cover;opacity:.8"><svg viewBox="0 0 100 60" style="position:absolute;inset:0;width:100%;height:100%" preserveAspectRatio="xMidYMid slice"><rect x="44" y="24" width="2" height="14" fill="#FFA24D"/><circle cx="45" cy="31" r="5" fill="none" stroke="#FFA24D" stroke-width=".6"/></svg></div>
+            <div class="meta"><b><span class="pt">Gêmeo digital</span><span class="en">Digital twin</span></b><span class="status live">● <span class="pt">em piloto</span><span class="en">in pilot</span></span></div>
+          </a>
+          <div class="ui">
+            <div class="thumb"><svg viewBox="0 0 100 60" style="width:100%;height:100%" preserveAspectRatio="none"><path d="M0 50 C20 48 25 14 50 12 C75 14 80 48 100 50" fill="none" stroke="#7FB2FF" stroke-width="1"/><g fill="#9AA7B8"><rect x="12" y="54" width="8" height="2"/><rect x="38" y="54" width="14" height="2" fill="#FFA24D"/><rect x="70" y="54" width="6" height="2"/></g></svg></div>
+            <div class="meta"><b><span class="pt">Linha do tempo</span><span class="en">Timeline</span></b><span class="status dev"><span class="pt">em desenvolvimento</span><span class="en">in development</span></span></div>
+          </div>
+          <div class="ui">
+            <div class="thumb" style="display:grid;align-content:center;gap:6px;padding:12px">
+              <span style="justify-self:end;background:#2A3A4E;border-radius:8px;padding:4px 8px;font-size:11px"><span class="pt">Por que o INV02 caiu?</span><span class="en">Why did INV02 drop?</span></span>
+              <span style="justify-self:start;background:#182432;border:1px solid var(--line);border-radius:8px;padding:4px 8px;font-size:11px;color:var(--fg-2)"><span class="pt">Nuvem, 10:31–10:48. 3 fontes.</span><span class="en">Cloud, 10:31–10:48. 3 sources.</span></span>
+            </div>
+            <div class="meta"><b><span class="pt">Assistente</span><span class="en">Assistant</span></b><span class="status dev"><span class="pt">em desenvolvimento</span><span class="en">in development</span></span></div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- twin -->
+<section class="block" id="twin">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker"><span class="pt">Gêmeo digital</span><span class="en">Digital twin</span></div>
+      <h2><span class="pt">A usina inteira, do mapa ao módulo.</span><span class="en">The whole plant, from map to module.</span></h2>
+      <p><span class="pt">Cada inversor, string, mesa e módulo no lugar certo, com o histórico de todas as fontes.</span><span class="en">Every inverter, string, table and module in the right place, with the history from every source.</span></p>
+    </div>
+
+    <div class="feature">
+      <div class="ftext">
+        <div class="kicker" style="margin-bottom:12px"><span class="pt">Do mapa ao módulo</span><span class="en">Map to module</span></div>
+        <h3><span class="pt">Da usina inteira a um único módulo.</span><span class="en">From the whole plant to a single module.</span></h3>
+        <p><span class="pt">Comece pela usina, abra um inversor, siga até a string e chegue ao módulo. Em cada nível, o histórico de todas as fontes: leituras, inspeções, testes e ordens de serviço.</span><span class="en">Start with the plant, open an inverter, follow it to the string and down to the module. At every level, the history from every source: readings, inspections, tests and work orders.</span></p>
+      </div>
+      <div class="fviz">
+        <div class="crumbs" id="dlCrumbs" aria-hidden="true">
+          <span data-c="0"><span class="pt">Usina</span><span class="en">Plant</span></span><i data-c="1">›</i><span data-c="1">INV03</span><i data-c="2">›</i><span data-c="2">INV3-ST12</span><i data-c="3">›</i><span data-c="3"><span class="pt">Módulo 14</span><span class="en">Module 14</span></span>
+        </div>
+        <svg id="dl" class="dl" viewBox="0 0 480 300" role="img" aria-label="Zoom from the whole plant to inverter INV03, string INV3-ST12 and module 14">
+          <defs><filter id="dlGlow"><feGaussianBlur stdDeviation="8"/></filter></defs>
+          <g class="lv" data-lv="0" style="transform-origin:169px 165px">
+            <polygon points="41.5,147.4 41.5,244.5 423.5,244.5 425.4,74.7 144.2,74.7" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="1" stroke-dasharray="4 3"/>
+            <rect class="dl-tbl dl-hi" x="51.4" y="163.2" width="116.1" height="6.8"/><rect class="dl-tbl dl-hi" x="51.4" y="174.7" width="116.1" height="6.8"/><rect class="dl-tbl dl-hi" x="51.4" y="185.7" width="116.1" height="6.8"/><rect class="dl-tbl dl-hi" x="51.4" y="196.8" width="116.1" height="6.8"/><rect class="dl-tbl dl-hi" x="51.4" y="207.3" width="116.1" height="6.8"/><rect class="dl-tbl dl-hi" x="51.4" y="218.8" width="116.1" height="6.8"/><rect class="dl-tbl dl-hi" x="51.4" y="229.8" width="116.1" height="6.8"/><rect class="dl-tbl" x="175.6" y="86.6" width="116.1" height="6.8"/><rect class="dl-tbl" x="175.6" y="97.6" width="116.1" height="6.8"/><rect class="dl-tbl" x="175.6" y="108.1" width="116.1" height="6.8"/><rect class="dl-tbl" x="175.6" y="119.6" width="116.1" height="6.8"/><rect class="dl-tbl" x="175.6" y="130.7" width="116.1" height="6.8"/><rect class="dl-tbl" x="175.6" y="141.7" width="116.1" height="6.8"/><rect class="dl-tbl" x="175.6" y="152.7" width="116.1" height="6.8"/><rect class="dl-tbl" x="175.6" y="163.2" width="116.1" height="6.8"/><rect class="dl-tbl" x="175.6" y="174.7" width="116.1" height="6.8"/><rect class="dl-tbl" x="175.6" y="185.2" width="116.1" height="6.8"/><rect class="dl-tbl" x="175.6" y="196.8" width="116.1" height="6.8"/><rect class="dl-tbl" x="175.6" y="207.3" width="116.1" height="6.8"/><rect class="dl-tbl" x="175.6" y="218.8" width="116.1" height="6.8"/><rect class="dl-tbl" x="175.6" y="229.8" width="116.1" height="6.8"/><rect class="dl-tbl" x="299.8" y="86.6" width="116.1" height="6.8"/><rect class="dl-tbl" x="299.8" y="97.6" width="116.1" height="6.8"/><rect class="dl-tbl" x="299.8" y="108.1" width="116.1" height="6.8"/><rect class="dl-tbl" x="299.8" y="119.6" width="116.1" height="6.8"/><rect class="dl-tbl" x="299.8" y="130.7" width="116.1" height="6.8"/><rect class="dl-tbl" x="299.8" y="141.7" width="116.1" height="6.8"/><rect class="dl-tbl" x="299.8" y="152.7" width="116.1" height="6.8"/><rect class="dl-tbl" x="299.8" y="163.7" width="116.1" height="6.8"/><rect class="dl-tbl" x="299.8" y="174.7" width="116.1" height="6.8"/><rect class="dl-tbl" x="299.8" y="187.2" width="116.1" height="6.8"/><rect class="dl-tbl" x="299.8" y="198.7" width="116.1" height="6.8"/><rect class="dl-tbl" x="299.8" y="209.9" width="116.1" height="6.8"/><rect class="dl-tbl" x="299.8" y="221.1" width="116.1" height="6.8"/><rect class="dl-tbl" x="299.8" y="232.2" width="116.1" height="6.8"/>
+            <circle cx="169.4" cy="165.2" r="16" fill="none" stroke="#F3AF8A" stroke-width="1.2" class="dl-ring"/>
+            <rect x="290.0" y="106.6" width="7" height="7" fill="#F2F4F7"/><text x="300.5" y="122.1" class="dl-lbl">INV01</text><rect x="291.8" y="183.7" width="7" height="7" fill="#F2F4F7"/><text x="302.3" y="199.2" class="dl-lbl">INV02</text><rect x="165.9" y="161.7" width="7" height="7" fill="#F3AF8A"/><text x="176.4" y="159.2" class="dl-lbl" fill="#F3AF8A">INV03</text><rect x="165.9" y="205.7" width="7" height="7" fill="#F2F4F7"/><text x="176.4" y="221.2" class="dl-lbl">INV04</text>
+            <text x="16" y="24" class="dl-cap"><tspan class="pt">1,3 MWp · 70 strings · 1.890 módulos</tspan><tspan class="en">1.3 MWp · 70 strings · 1,890 modules</tspan></text>
+          </g>
+          <g class="lv" data-lv="1" style="transform-origin:380px 197px">
+            <rect x="24" y="96" width="92" height="110" rx="6" fill="#121C27" stroke="rgba(242,244,247,.4)"/>
+            <path d="M24 206 L116 96" stroke="rgba(242,244,247,.4)"/>
+            <text x="70" y="226" text-anchor="middle" class="dl-name">INV03</text>
+            <path d="M116 151 H150" stroke="rgba(127,178,255,.6)" stroke-dasharray="3 3"/>
+            <text x="170" y="30" class="dl-cap"><tspan class="pt">Corrente por string</tspan><tspan class="en">Current per string</tspan></text>
+            <rect x="170" y="44.0" width="216.7" height="8" rx="2" fill="rgba(127,178,255,.55)"/><text x="160" y="51.5" text-anchor="end" class="dl-lbl">ST1</text><rect x="170" y="57.5" width="212.5" height="8" rx="2" fill="rgba(127,178,255,.55)"/><rect x="170" y="71.0" width="220.8" height="8" rx="2" fill="rgba(127,178,255,.55)"/><rect x="170" y="84.5" width="216.7" height="8" rx="2" fill="rgba(127,178,255,.55)"/><rect x="170" y="98.0" width="212.5" height="8" rx="2" fill="rgba(127,178,255,.55)"/><rect x="170" y="111.5" width="216.7" height="8" rx="2" fill="rgba(127,178,255,.55)"/><rect x="170" y="125.0" width="220.8" height="8" rx="2" fill="rgba(127,178,255,.55)"/><rect x="170" y="138.5" width="216.7" height="8" rx="2" fill="rgba(127,178,255,.55)"/><rect x="170" y="152.0" width="212.5" height="8" rx="2" fill="rgba(127,178,255,.55)"/><rect x="170" y="165.5" width="216.7" height="8" rx="2" fill="rgba(127,178,255,.55)"/><rect x="170" y="179.0" width="220.8" height="8" rx="2" fill="rgba(127,178,255,.55)"/><rect x="170" y="192.5" width="170.8" height="8" rx="2" fill="#FFA24D"/><text x="160" y="200.0" text-anchor="end" class="dl-lbl" fill="#FFC69A">ST12</text><rect x="170" y="206.0" width="216.7" height="8" rx="2" fill="rgba(127,178,255,.55)"/><rect x="170" y="219.5" width="212.5" height="8" rx="2" fill="rgba(127,178,255,.55)"/><rect x="170" y="233.0" width="216.7" height="8" rx="2" fill="rgba(127,178,255,.55)"/><rect x="170" y="246.5" width="220.8" height="8" rx="2" fill="rgba(127,178,255,.55)"/><rect x="170" y="260.0" width="216.7" height="8" rx="2" fill="rgba(127,178,255,.55)"/><text x="160" y="267.5" text-anchor="end" class="dl-lbl">ST17</text>
+            <text x="380" y="201" class="dl-lbl" fill="#FFC69A"><tspan class="pt">14,1 A vs 15,2 A</tspan><tspan class="en">14.1 A vs 15.2 A</tspan></text>
+          </g>
+          <g class="lv" data-lv="2" style="transform-origin:241px 180px">
+            <text x="34" y="66" class="dl-cap"><tspan class="pt">Mesa R1C02</tspan><tspan class="en">Table R1C02</tspan></text>
+            <rect x="28" y="84" width="424" height="140" rx="4" fill="none" stroke="rgba(242,244,247,.18)"/>
+            <rect class="dl-mod" x="34.0" y="112" width="13.4" height="40"/><rect class="dl-mod" x="49.4" y="112" width="13.4" height="40"/><rect class="dl-mod" x="64.8" y="112" width="13.4" height="40"/><rect class="dl-mod" x="80.2" y="112" width="13.4" height="40"/><rect class="dl-mod" x="95.6" y="112" width="13.4" height="40"/><rect class="dl-mod" x="111.0" y="112" width="13.4" height="40"/><rect class="dl-mod" x="126.4" y="112" width="13.4" height="40"/><rect class="dl-mod" x="141.8" y="112" width="13.4" height="40"/><rect class="dl-mod" x="157.2" y="112" width="13.4" height="40"/><rect class="dl-mod" x="172.6" y="112" width="13.4" height="40"/><rect class="dl-mod" x="188.0" y="112" width="13.4" height="40"/><rect class="dl-mod" x="203.4" y="112" width="13.4" height="40"/><rect class="dl-mod" x="218.8" y="112" width="13.4" height="40"/><rect class="dl-mod" x="234.2" y="112" width="13.4" height="40"/><rect class="dl-mod" x="249.6" y="112" width="13.4" height="40"/><rect class="dl-mod" x="265.0" y="112" width="13.4" height="40"/><rect class="dl-mod" x="280.4" y="112" width="13.4" height="40"/><rect class="dl-mod" x="295.8" y="112" width="13.4" height="40"/><rect class="dl-mod" x="311.2" y="112" width="13.4" height="40"/><rect class="dl-mod" x="326.6" y="112" width="13.4" height="40"/><rect class="dl-mod" x="342.0" y="112" width="13.4" height="40"/><rect class="dl-mod" x="357.4" y="112" width="13.4" height="40"/><rect class="dl-mod" x="372.8" y="112" width="13.4" height="40"/><rect class="dl-mod" x="388.2" y="112" width="13.4" height="40"/><rect class="dl-mod" x="403.6" y="112" width="13.4" height="40"/><rect class="dl-mod" x="419.0" y="112" width="13.4" height="40"/><rect class="dl-mod" x="434.4" y="112" width="13.4" height="40"/><text x="34" y="104" class="dl-lbl">INV3-ST11</text><rect class="dl-mod" x="34.0" y="160" width="13.4" height="40" style="fill:rgba(255,162,77,.16)"/><rect class="dl-mod" x="49.4" y="160" width="13.4" height="40" style="fill:rgba(255,162,77,.16)"/><rect class="dl-mod" x="64.8" y="160" width="13.4" height="40" style="fill:rgba(255,162,77,.16)"/><rect class="dl-mod" x="80.2" y="160" width="13.4" height="40" style="fill:rgba(255,162,77,.16)"/><rect class="dl-mod" x="95.6" y="160" width="13.4" height="40" style="fill:rgba(255,162,77,.16)"/><rect class="dl-mod" x="111.0" y="160" width="13.4" height="40" style="fill:rgba(255,162,77,.16)"/><rect class="dl-mod" x="126.4" y="160" width="13.4" height="40" style="fill:rgba(255,162,77,.16)"/><rect class="dl-mod" x="141.8" y="160" width="13.4" height="40" style="fill:rgba(255,162,77,.16)"/><rect class="dl-mod" x="157.2" y="160" width="13.4" height="40" style="fill:rgba(255,162,77,.16)"/><rect class="dl-mod" x="172.6" y="160" width="13.4" height="40" style="fill:rgba(255,162,77,.16)"/><rect class="dl-mod" x="188.0" y="160" width="13.4" height="40" style="fill:rgba(255,162,77,.16)"/><rect class="dl-mod" x="203.4" y="160" width="13.4" height="40" style="fill:rgba(255,162,77,.16)"/><rect class="dl-mod" x="218.8" y="160" width="13.4" height="40" style="fill:rgba(255,162,77,.16)"/><rect class="dl-mod" x="234.2" y="160" width="13.4" height="40" style="fill:#FFA24D"/><rect class="dl-mod" x="249.6" y="160" width="13.4" height="40" style="fill:rgba(255,162,77,.16)"/><rect class="dl-mod" x="265.0" y="160" width="13.4" height="40" style="fill:rgba(255,162,77,.16)"/><rect class="dl-mod" x="280.4" y="160" width="13.4" height="40" style="fill:rgba(255,162,77,.16)"/><rect class="dl-mod" x="295.8" y="160" width="13.4" height="40" style="fill:rgba(255,162,77,.16)"/><rect class="dl-mod" x="311.2" y="160" width="13.4" height="40" style="fill:rgba(255,162,77,.16)"/><rect class="dl-mod" x="326.6" y="160" width="13.4" height="40" style="fill:rgba(255,162,77,.16)"/><rect class="dl-mod" x="342.0" y="160" width="13.4" height="40" style="fill:rgba(255,162,77,.16)"/><rect class="dl-mod" x="357.4" y="160" width="13.4" height="40" style="fill:rgba(255,162,77,.16)"/><rect class="dl-mod" x="372.8" y="160" width="13.4" height="40" style="fill:rgba(255,162,77,.16)"/><rect class="dl-mod" x="388.2" y="160" width="13.4" height="40" style="fill:rgba(255,162,77,.16)"/><rect class="dl-mod" x="403.6" y="160" width="13.4" height="40" style="fill:rgba(255,162,77,.16)"/><rect class="dl-mod" x="419.0" y="160" width="13.4" height="40" style="fill:rgba(255,162,77,.16)"/><rect class="dl-mod" x="434.4" y="160" width="13.4" height="40" style="fill:rgba(255,162,77,.16)"/><text x="34" y="218" class="dl-lbl" fill="#FFC69A">INV3-ST12 · <tspan class="pt">−7,4%</tspan><tspan class="en">−7.4%</tspan></text>
+            <rect x="231.2" y="157" width="19.4" height="46" rx="3" fill="none" stroke="#F3AF8A" stroke-width="1.4" class="dl-ring"/>
+            <text x="240.9" y="244" text-anchor="middle" class="dl-lbl" fill="#F3AF8A"><tspan class="pt">módulo 14</tspan><tspan class="en">module 14</tspan></text>
+          </g>
+          <g class="lv on" data-lv="3" style="transform-origin:240px 150px">
+            <rect x="34" y="28" width="144" height="232" rx="4" fill="#0E1823" stroke="rgba(242,244,247,.5)"/>
+            <rect x="40" y="34" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="62" y="34" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="84" y="34" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="106" y="34" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="128" y="34" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="150" y="34" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="40" y="56" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="62" y="56" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="84" y="56" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="106" y="56" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="128" y="56" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="150" y="56" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="40" y="78" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="62" y="78" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="84" y="78" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="106" y="78" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="128" y="78" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="150" y="78" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="40" y="100" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="62" y="100" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="84" y="100" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="106" y="100" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="128" y="100" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="150" y="100" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="40" y="122" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="62" y="122" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="84" y="122" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="106" y="122" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="128" y="122" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="150" y="122" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="40" y="144" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="62" y="144" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="84" y="144" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="106" y="144" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="128" y="144" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="150" y="144" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="40" y="166" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="62" y="166" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="84" y="166" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="106" y="166" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="128" y="166" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="150" y="166" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="40" y="188" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="62" y="188" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="84" y="188" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="106" y="188" width="20" height="20" fill="#FF9A3D" opacity=".85" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="128" y="188" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="150" y="188" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="40" y="210" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="62" y="210" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="84" y="210" width="20" height="20" fill="#FF9A3D" opacity=".85" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="106" y="210" width="20" height="20" fill="#FF9A3D" opacity=".85" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="128" y="210" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="150" y="210" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="40" y="232" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="62" y="232" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="84" y="232" width="20" height="20" fill="#FF9A3D" opacity=".85" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="106" y="232" width="20" height="20" fill="#FF9A3D" opacity=".85" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="128" y="232" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/><rect x="150" y="232" width="20" height="20" fill="#1C2C40" stroke="rgba(190,215,255,.25)" stroke-width=".6"/>
+            <circle cx="106" cy="231" r="26" fill="rgba(255,154,61,.25)" filter="url(#dlGlow)"/>
+            <rect x="90" y="262" width="32" height="10" rx="2" fill="#121C27" stroke="rgba(242,244,247,.5)"/>
+            <text x="106" y="290" text-anchor="middle" class="dl-lbl"><tspan class="pt">caixa de junção</tspan><tspan class="en">junction box</tspan></text>
+            <rect x="206" y="40" width="258" height="214" rx="10" fill="#121C27" stroke="rgba(242,244,247,.16)"/>
+            <text x="224" y="68" class="dl-name"><tspan class="pt">Módulo 14</tspan><tspan class="en">Module 14</tspan></text>
+            <text x="224" y="86" class="dl-lbl" fill="#6E7C8E"><tspan class="pt">INV3-ST12 · mesa R1C02</tspan><tspan class="en">INV3-ST12 · table R1C02</tspan></text>
+            <line x1="224" y1="100" x2="446" y2="100" stroke="rgba(242,244,247,.08)"/>
+            <circle cx="229" cy="122" r="3.5" fill="#FFA24D"/>
+            <text x="242" y="126" class="dl-row"><tspan class="pt">fev · IR aéreo</tspan><tspan class="en">Feb · aerial IR</tspan></text>
+            <text x="242" y="142" class="dl-sub"><tspan class="pt">ponto quente na caixa de junção</tspan><tspan class="en">hot spot at junction box</tspan></text>
+            <circle cx="229" cy="170" r="3.5" fill="#9AA7B8"/>
+            <text x="242" y="174" class="dl-row"><tspan class="pt">mai · ordem de serviço</tspan><tspan class="en">May · work order</tspan></text>
+            <text x="242" y="190" class="dl-sub"><tspan class="pt">conector trocado</tspan><tspan class="en">connector replaced</tspan></text>
+            <circle cx="229" cy="218" r="3.5" fill="#7FB2FF"/>
+            <text x="242" y="222" class="dl-row"><tspan class="pt">hoje · leitura</tspan><tspan class="en">today · reading</tspan></text>
+            <text x="242" y="238" class="dl-sub"><tspan class="pt">corrente da string −7,4%</tspan><tspan class="en">string current −7.4%</tspan></text>
+          </g>
+        </svg>
+        <div class="dl-steps" id="dlSteps" aria-hidden="true"><span></span><span></span><span></span><span class="on"></span></div>
       </div>
     </div>
-  </section>
-  <section class="approach-band" id="solucao" aria-labelledby="approach-title"><div class="wrap section">
-    <div class="section-label"><span>02 /</span><span>COMO FUNCIONA</span></div>
-    <div class="section-content"><h2 id="approach-title">Do dado ao diagnóstico <br>de cada módulo.</h2><p class="lead">Uma camada de dados que reúne o histórico operacional e as inspeções da usina.</p></div>
-    <div class="steps">
-      <article class="step"><div class="step-top"><span>01</span><svg viewBox="0 0 64 48" aria-hidden="true"><path d="M4 10h18l12 14h26M4 38h18l12-14M4 24h15"/><circle cx="4" cy="10" r="3"/><circle cx="4" cy="38" r="3"/><circle cx="59" cy="24" r="3"/></svg></div><h3>Integração dos dados</h3><p>Reunimos dados de SCADA e O&M com imagens de termografia e eletroluminescência dos prestadores que já realizam as inspeções.</p></article>
-      <article class="step"><div class="step-top"><span>02</span><svg viewBox="0 0 64 48" aria-hidden="true"><path d="m32 4 25 13-25 13L7 17Z M7 25l25 13 25-13M7 33l25 13 25-13"/></svg></div><h3>Gêmeo digital da usina</h3><p>Organizamos essas informações em uma representação digital da usina, com identificação e histórico de cada módulo.</p></article>
-      <article class="step"><div class="step-top"><span>03</span><svg viewBox="0 0 64 48" aria-hidden="true"><path d="M6 6v36h52M14 32l12-8 11 3L55 9"/><circle cx="55" cy="9" r="4"/></svg></div><h3>Análise dos defeitos</h3><p>Cruzamos desempenho e resultados das inspeções para identificar defeitos, acompanhar sua evolução e apoiar as decisões de O&M.</p></article>
+    <div class="feature flip">
+      <div class="ftext">
+        <div class="kicker" style="margin-bottom:12px"><span class="pt">Alertas</span><span class="en">Alerts</span></div>
+        <h3><span class="pt">Alertas que entendem o céu.</span><span class="en">Alerts that understand the sky.</span></h3>
+        <p><span class="pt">Uma nuvem passa e derruba dezenas de strings. A maioria dos sistemas dispara alarmes. A SIGHT sabe onde está a sombra, conta a perda e só sinaliza a string que continua baixa fora dela.</span><span class="en">A cloud passes and drops dozens of strings. Most systems fire alarms. SIGHT knows where the shade is, counts the loss, and only flags the string that stays low outside it.</span></p>
+        <p class="fine"><span class="pt">Exemplo de regra: só sinaliza após 30 min, 3% abaixo do esperado, com POA acima de 300 W/m² e fora da sombra prevista.</span><span class="en">Example rule: flags only after 30 min at 3% below expected, with POA above 300 W/m² and outside modeled shade.</span></p>
+      </div>
+      <div class="fviz">
+        <svg id="fa" viewBox="0 0 480 300" role="img" aria-label="Cloud shadow moving over solar tables">
+          <defs><filter id="blurA"><feGaussianBlur stdDeviation="14"/></filter><filter id="blurB"><feGaussianBlur stdDeviation="6"/></filter></defs>
+          <g id="faT"></g>
+          <ellipse id="faShade" cx="180" cy="150" rx="85" ry="110" fill="rgba(0,4,10,.45)" filter="url(#blurB)"/>
+          <ellipse id="faCloud" cx="150" cy="105" rx="80" ry="64" fill="rgba(255,255,255,.55)" filter="url(#blurA)"/>
+          <g id="faFlagLbl" font-family="JetBrains Mono, monospace" font-size="11">
+            <rect id="faChip" x="376" y="96" width="100" height="20" rx="10" fill="rgba(255,154,61,.92)"/>
+            <text id="faChipT" x="426" y="110" text-anchor="middle" fill="#1A0E02"><tspan class="pt">−7,4% · alerta</tspan><tspan class="en">−7.4% · flag</tspan></text>
+          </g>
+        </svg>
+        <div class="readout"><span><span class="pt">Strings na sombra</span><span class="en">Strings shaded</span> <b id="faN">20</b></span><span><span class="pt">Perda prevista</span><span class="en">Modeled loss</span> <b id="faKw">−190 kW</b></span><span><span class="pt">Alertas</span><span class="en">Alerts</span> <b id="faA">1</b></span></div>
+      </div>
     </div>
-  </div></section>
-  <section class="section wrap audience" id="publico" aria-labelledby="who-title">
-    <div class="section-label"><span>03 /</span><span>PARA QUEM</span></div>
-    <div class="section-content"><h2 id="who-title">Para quem opera e gerencia <br>usinas solares no Brasil.</h2>
-      <div class="audience-row"><span class="row-arrow" aria-hidden="true">↗</span><div><h3>Empresas de O&M</h3><p>Histórico por módulo e dados de inspeção conectados à operação, para dar contexto às decisões de manutenção.</p></div></div>
-      <div class="audience-row"><span class="row-arrow" aria-hidden="true">↗</span><div><h3>Proprietários de usinas de GD</h3><p>Uma visão integrada dos ativos de geração distribuída, do desempenho da usina às condições de cada módulo.</p></div></div>
+
+    <div class="feature">
+      <div class="ftext">
+        <div class="kicker" style="margin-bottom:12px"><span class="pt">Quadro da equipe</span><span class="en">Team board</span></div>
+        <h3><span class="pt">Notas, fotos e vínculos direto na usina.</span><span class="en">Notes, photos and links right on the plant.</span></h3>
+        <p><span class="pt">Fixe qualquer gráfico, tabela ou equipamento como um cartão sobre o mapa. Ligue cartões entre si ou a um equipamento, anexe fotos de campo e responda no próprio cartão. Notas podem ser só suas ou da equipe.</span><span class="en">Pin any chart, table or piece of equipment as a card on the map. Link cards to each other or to equipment, attach field photos and reply inside the card. Notes can be yours only or shared with the team.</span></p>
+        <p class="fine"><span class="pt">Vínculos automáticos ligam cada cartão à sua origem; os seus ficam em destaque.</span><span class="en">Auto links tie each card to where it came from; the ones you draw stand out.</span></p>
+      </div>
+      <div class="fviz">
+        <div class="board" aria-hidden="true">
+          <svg class="bsvg" viewBox="0 0 480 300" preserveAspectRatio="none">
+            <defs><linearGradient id="bg2" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#132131"/><stop offset="1" stop-color="#0D1824"/></linearGradient></defs>
+            <rect width="480" height="300" fill="url(#bg2)"/>
+            <g fill="rgba(28,44,64,.9)" stroke="rgba(190,215,255,.3)" stroke-width=".6">
+              <rect x="180" y="30" width="10" height="110"/><rect x="198" y="30" width="10" height="110"/><rect x="216" y="30" width="10" height="110"/><rect x="234" y="30" width="10" height="110"/><rect x="252" y="30" width="10" height="110"/><rect x="270" y="30" width="10" height="110"/><rect x="288" y="30" width="10" height="110"/>
+              <rect x="180" y="160" width="10" height="110"/><rect x="198" y="160" width="10" height="110"/><rect x="216" y="160" width="10" height="110"/><rect x="234" y="160" width="10" height="110"/><rect x="252" y="160" width="10" height="110"/><rect x="270" y="160" width="10" height="110"/><rect x="288" y="160" width="10" height="110"/>
+            </g>
+            <rect x="234" y="85" width="10" height="55" fill="rgba(255,160,70,.6)" stroke="#FFB067" stroke-width="1"/>
+            <path id="bl1" d="M136 70 C190 70 200 112 232 112" fill="none" stroke="#7FB2FF" stroke-width="1.6"/>
+            <path d="M136 210 C190 210 210 140 236 136" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="1.2" stroke-dasharray="4 4"/>
+            <path class="drawlink" d="M350 232 C300 232 270 200 252 196" fill="none" stroke="#7FB2FF" stroke-width="1.6"/>
+            <circle r="2.6" cx="-50" cy="-50" fill="#7FB2FF"><animateMotion dur="2.6s" repeatCount="indefinite"><mpath href="#bl1"/></animateMotion></circle>
+            <g class="cursor"><path d="M352 230 l0 14 l4 -4 l3 6 l2 -1 l-3 -6 l5 0 z" fill="#fff" stroke="#0B121A" stroke-width=".8"/></g>
+          </svg>
+          <div class="bcard" style="left:2%;top:5%;width:27%"><b><span class="pt">Nota da equipe</span><span class="en">Team note</span></b> · Rafael M.<img src="img/rgb.jpg" alt=""><span class="pt">Tampa trincada na R1C02.</span><span class="en">Lid cracked on R1C02.</span></div>
+          <div class="bcard reply" style="left:2%;top:54%;width:27%"><b>Ana S.</b> <span class="pt">Bate com o IR de fev. Abrindo OS.</span><span class="en">Matches the Feb IR. Opening a WO.</span></div>
+          <div class="bcard" style="left:73%;top:8%;width:25%"><span class="chip chip-s3">S3</span> <b>INV3-ST12</b><br><span class="pt">−7,4% · 52 min</span><span class="en">−7.4% · 52 min</span></div>
+          <div class="bcard sticky" style="left:73%;top:68%;width:25%"><b><span class="pt">Só eu</span><span class="en">Only me</span></b><br><span class="pt">Rever após a chuva.</span><span class="en">Check again after rain.</span></div>
+        </div>
+      </div>
     </div>
-  </section>
-  <section class="contact-band" id="contato" aria-labelledby="contact-title"><div class="wrap contact">
-    <div><p class="eyebrow">FALE COM A SIGHT</p><h2 id="contact-title">Vamos conectar os dados <br>da sua usina.</h2><p>Converse com a SIGHT sobre sua operação e seus dados de inspeção.</p></div>
-    <div class="contact-address"><span class="contact-arrow" aria-hidden="true">↗</span><a class="button email" href="mailto:rafael@sight.solar">rafael@sight.solar <span aria-hidden="true">↗</span></a></div>
-  </div></section>
+
+    <div class="feature flip">
+      <div class="ftext">
+        <div class="kicker" style="margin-bottom:12px"><span class="pt">Unifilar</span><span class="en">Single-line</span></div>
+        <h3><span class="pt">Um unifilar vivo, que mostra o que cai junto.</span><span class="en">A live single-line that shows what goes down with it.</span></h3>
+        <p><span class="pt">O fluxo de potência aparece no diagrama, ramo por ramo. Quando um disjuntor abre, o ramo para e a SIGHT mostra tudo o que ele derruba: strings, módulos e a potência perdida.</span><span class="en">Power flow shows up in the diagram, branch by branch. When a breaker opens, the branch stops and SIGHT shows everything it takes down: strings, modules and the power lost.</span></p>
+        <p class="fine"><span class="pt">Símbolos IEC, camadas de potência, comunicação e auxiliares separadas.</span><span class="en">IEC symbols, with separate power, comms and auxiliary layers.</span></p>
+      </div>
+      <div class="fviz">
+        <svg class="sld" id="sld" viewBox="0 0 480 270" role="img" aria-label="Single-line diagram with power flow">
+          <g id="brs">
+            <g class="br" data-i="0"><path class="slf" d="M44 40 H222" style="animation-duration:.9s"/><rect class="sym" x="10" y="31" width="34" height="18"/><path class="sl" d="M10 49 L44 31"/><rect class="sym" x="96" y="28" width="24" height="24"/><path class="sl" d="M96 52 L120 28"/><text class="slk" x="130" y="34">241 kW</text></g>
+            <g class="br" data-i="1"><path class="slf" d="M44 95 H222" style="animation-duration:.9s"/><rect class="sym" x="10" y="86" width="34" height="18"/><path class="sl" d="M10 104 L44 86"/><rect class="sym" x="96" y="83" width="24" height="24"/><path class="sl" d="M96 107 L120 83"/><text class="slk" x="130" y="89" id="k2">238 kW</text>
+              <g class="bk-closed"><rect x="186" y="89" width="12" height="12" fill="#0B121A" stroke="#fff"/></g>
+              <g class="bk-open"><rect x="186" y="89" width="12" height="12" fill="#0B121A" stroke="#FFA24D"/><path d="M186 101 L200 84" stroke="#FFA24D" stroke-width="1.6"/></g>
+            </g>
+            <g class="br" data-i="2"><path class="slf" d="M44 150 H222" style="animation-duration:.9s"/><rect class="sym" x="10" y="141" width="34" height="18"/><path class="sl" d="M10 159 L44 141"/><rect class="sym" x="96" y="138" width="24" height="24"/><path class="sl" d="M96 162 L120 138"/><text class="slk" x="130" y="144">236 kW</text></g>
+            <g class="br" data-i="3"><path class="slf" d="M44 205 H222" style="animation-duration:.9s"/><rect class="sym" x="10" y="196" width="34" height="18"/><path class="sl" d="M10 214 L44 196"/><rect class="sym" x="96" y="193" width="24" height="24"/><path class="sl" d="M96 217 L120 193"/><text class="slk" x="130" y="199">240 kW</text></g>
+          </g>
+          <path d="M222 28 V218" stroke="#fff" stroke-width="3"/>
+          <text class="slt" x="208" y="236">QGBT</text>
+          <g id="main"><path class="slf" d="M222 122 H282 M330 122 H388 M404 122 H470" style="animation-duration:.5s"/></g>
+          <circle class="sym" cx="296" cy="122" r="15"/><circle class="sym" cx="316" cy="122" r="15"/>
+          <rect class="sym" x="388" y="114" width="16" height="16"/><path class="sl" d="M388 130 L404 114"/>
+          <text class="slt" x="290" y="152">TR-01</text>
+          <text class="slk" x="234" y="114" id="kbus">955 kW</text>
+          <text class="slk" x="416" y="114" id="kgrid">947 kW</text>
+          <text class="slt" x="416" y="146"><tspan class="pt">rede 13,8 kV</tspan><tspan class="en">grid 13.8 kV</tspan></text>
+          <g class="trace"><rect x="6" y="80" width="208" height="30" rx="6" fill="none" stroke="#FFA24D" stroke-width="1.2" stroke-dasharray="3 3"/></g>
+          <g class="tripmsg" font-family="JetBrains Mono, monospace" font-size="11">
+            <rect x="10" y="236" width="300" height="26" rx="13" fill="rgba(255,154,61,.14)" stroke="rgba(255,154,61,.5)"/>
+            <text x="24" y="253" fill="#FFC69A"><tspan class="pt">INV02 abriu · cai junto: 18 strings, 486 módulos</tspan><tspan class="en">INV02 open · takes down 18 strings, 486 modules</tspan></text>
+          </g>
+          <text class="slt" x="14" y="24">PV</text><text class="slt" x="94" y="22"><tspan class="pt">inversor</tspan><tspan class="en">inverter</tspan></text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- who -->
+<section class="block" id="who">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker"><span class="pt">Para quem</span><span class="en">Who it's for</span></div>
+      <h2><span class="pt">Para quem precisa saber onde agir primeiro, com a prova na mão.</span><span class="en">For teams who need to know where to act first, with the proof in hand.</span></h2>
+    </div>
+    <div class="who">
+      <article>
+        <h3><span class="pt">Empresas de O&amp;M</span><span class="en">O&amp;M companies</span></h3>
+        <p><span class="pt">Menos alarmes falsos, prioridades por energia em risco e histórico de cada componente na mão do técnico.</span><span class="en">Fewer false alarms, priorities set by energy at risk, and every component's history in the technician's hands.</span></p>
+        <ul>
+          <li><span class="pt">Prove ao cliente o que foi feito e quanto recuperou</span><span class="en">Show clients what was done and what it recovered</span></li>
+          <li><span class="pt">Pare de corrigir a mesma falha três vezes</span><span class="en">Stop fixing the same fault three times</span></li>
+          <li><span class="pt">Gerencie mais MWp sem crescer a equipe na mesma proporção</span><span class="en">Manage more MWp without growing the team at the same rate</span></li>
+        </ul>
+      </article>
+      <article>
+        <h3><span class="pt">Donos de usinas e carteiras</span><span class="en">Plant owners and portfolios</span></h3>
+        <p><span class="pt">De GD a usinas de grande porte: uma visão da carteira até o módulo, com perdas em reais.</span><span class="en">From distributed generation to utility scale: one view from the portfolio down to the module, with losses in reais.</span></p>
+        <ul>
+          <li><span class="pt">Compare usinas e operadores com os mesmos critérios</span><span class="en">Compare plants and operators on the same terms</span></li>
+          <li><span class="pt">Garantias, sinistros e due diligence com evidência</span><span class="en">Warranties, claims and due diligence backed by evidence</span></li>
+        </ul>
+      </article>
+    </div>
+    <div class="partners">
+      <span class="lbl2"><span class="pt">Parceiros</span><span class="en">Partners</span></span>
+      <div class="pstrip">
+        <div class="plogo-set">
+          <figure class="plogo"><img src="img/logo-gera.png" alt="Gera Energia" width="359" height="101"><figcaption><span class="pt">Parceira da SIGHT</span><span class="en">SIGHT partner</span></figcaption></figure>
+          <figure class="plogo"><img src="img/logo-gerar.png" alt="Gerar" width="364" height="104"><figcaption><span class="pt">Empresa de O&amp;M da Gera</span><span class="en">Gera's O&amp;M company</span></figcaption></figure>
+        </div>
+        <div class="pfigs">
+          <div class="pfig-lbl"><span class="pt">Operação da Gerar no Brasil</span><span class="en">Gerar's operation in Brazil</span></div>
+          <div class="pfig-row">
+            <div class="pfig"><span class="n">500</span><span class="u">MW</span></div>
+            <div class="pfig"><span class="n">150</span><span class="u"><span class="pt">usinas solares</span><span class="en">solar plants</span></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- contact -->
+<section class="block" id="contact">
+  <div class="wrap contact">
+    <div>
+      <div class="kicker" style="margin-bottom:16px"><span class="pt">Contato</span><span class="en">Contact</span></div>
+      <h2><span class="pt">Vamos olhar a sua usina juntos.</span><span class="en">Let's look at your plant together.</span></h2>
+      <p class="muted" style="margin-top:16px;max-width:52ch"><span class="pt">Conte quais dados você já tem. Mostramos o que dá para cruzar e o que isso pode revelar.</span><span class="en">Tell us what data you already have. We'll show you what can be connected and what it could reveal.</span></p>
+      <div class="mailrow">
+        <span class="mail" id="mail">rafael@sight.solar</span>
+        <button class="btn btn-primary" type="button" id="copyMail"><span class="pt">Copiar e-mail</span><span class="en">Copy email</span></button>
+        <a class="btn btn-ghost" href="mailto:rafael@sight.solar"><span class="pt">Abrir e-mail</span><span class="en">Open email</span></a>
+      </div>
+    </div>
+    <div class="muted mono" style="font-size:13px">São Paulo · Brasil</div>
+  </div>
+</section>
+</div>
+
+<!-- ======================= TEAM ======================= -->
+<div data-view="team" hidden>
+<section class="block" style="border-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker"><span class="pt">Equipe</span><span class="en">Team</span></div>
+      <h2><span class="pt">Engenharia, dados e campo.</span><span class="en">Engineering, data and fieldwork.</span></h2>
+      <p><span class="pt">Três fundadores que conheceram o problema dentro de uma empresa de O&amp;M, não numa planilha.</span><span class="en">Three founders who learned the problem inside an O&amp;M company, not from a spreadsheet.</span></p>
+    </div>
+    <div class="team">
+      <article class="person">
+        <img src="img/team-vitor.jpg" alt="Vitor Morgensztern">
+        <div><div class="role"><span class="pt">Cofundador</span><span class="en">Co-founder</span></div><h3>Vitor Morgensztern</h3></div>
+        <p class="school">Machine Learning, Carnegie Mellon</p>
+      </article>
+      <article class="person">
+        <img src="img/team-rafael.jpg" alt="Rafael Sharp">
+        <div><div class="role"><span class="pt">Cofundador</span><span class="en">Co-founder</span></div><h3>Rafael Sharp</h3></div>
+        <p class="school"><span class="pt">Engenharia Mecânica, Georgia Tech</span><span class="en">Mechanical Engineering, Georgia Tech</span></p>
+      </article>
+      <article class="person">
+        <img src="img/team-lucas.jpg" alt="Lucas Bicudo">
+        <div><div class="role"><span class="pt">Cofundador</span><span class="en">Co-founder</span></div><h3>Lucas Bicudo</h3></div>
+        <p class="school"><span class="pt">Engenharia Mecânica, UC San Diego</span><span class="en">Mechanical Engineering, UC San Diego</span></p>
+      </article>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ======================= TRAJECTORY ======================= -->
+<div data-view="trajectory" hidden>
+<section class="block" style="border-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker"><span class="pt">Trajetória</span><span class="en">Trajectory</span></div>
+      <h2><span class="pt">De inspeção por drone a um Brain para a usina inteira.</span><span class="en">From drone inspection to a Brain for the whole plant.</span></h2>
+      <p><span class="pt">Começamos olhando módulos do alto. Dentro da operação, vimos que o problema maior era outro: os dados certos já existiam, espalhados.</span><span class="en">We started by looking at modules from above. Inside the operation we found the bigger problem: the right data already existed, scattered.</span></p>
+    </div>
+    <ol class="tl">
+      <li><span class="when"><span class="pt">jan 2026</span><span class="en">Jan 2026</span></span><span class="pin"></span><div class="body"><h3><span class="pt">Fundação da SIGHT</span><span class="en">SIGHT founded</span></h3><p><span class="pt">Inspeção aérea de ativos solares: IR, RGB, EL e UVF.</span><span class="en">Aerial inspection of solar assets: IR, RGB, EL and UVF.</span></p></div></li>
+      <li><span class="when"><span class="pt">jan 2026</span><span class="en">Jan 2026</span></span><span class="pin"></span><div class="body"><h3><span class="pt">Primeira conversa com a Gerar</span><span class="en">First conversation with Gerar</span></h3><p><span class="pt">Início da parceria com a Gerar e o Grupo Gera.</span><span class="en">Start of the partnership with Gerar and Grupo Gera.</span></p></div></li>
+      <li><span class="when"><span class="pt">fev 2026</span><span class="en">Feb 2026</span></span><span class="pin"></span><div class="body"><h3><span class="pt">Voo de drone na usina piloto</span><span class="en">Drone flight at the pilot plant</span></h3><p><span class="pt">IR e RGB de 1.890 módulos; 11 anomalias encontradas.</span><span class="en">IR and RGB of 1,890 modules; 11 anomalies found.</span></p></div></li>
+      <li><span class="when"><span class="pt">jul 2026</span><span class="en">Jul 2026</span></span><span class="pin"></span><div class="body"><h3>Intersolar</h3><p><span class="pt">Presença na Intersolar South America, em São Paulo.</span><span class="en">At Intersolar South America, in São Paulo.</span></p></div></li>
+      <li><span class="when"><span class="pt">set 2026</span><span class="en">Sep 2026</span></span><span class="pin"></span><div class="body"><h3><span class="pt">Implantação em campo na Gerar</span><span class="en">Forward deployment at Gerar</span></h3><p><span class="pt">A equipe trabalhou dentro da operação de O&amp;M e viu de perto onde os dados se perdem.</span><span class="en">The team worked inside the O&amp;M operation and saw up close where the data gets lost.</span></p></div></li>
+      <li><span class="when"><span class="pt">set 2026</span><span class="en">Sep 2026</span></span><span class="pin"></span><div class="body"><h3><span class="pt">Pivô para o Brain de dados</span><span class="en">Pivot to the data Brain</span></h3><p><span class="pt">A SIGHT deixa de analisar só imagens e passa a conectar todas as fontes da usina.</span><span class="en">SIGHT stops analyzing imagery alone and starts connecting every source in the plant.</span></p></div></li>
+      <li><span class="when"><span class="pt">out 2026</span><span class="en">Oct 2026</span></span><span class="pin"></span><div class="body"><h3><span class="pt">Primeiro gêmeo digital de uma usina real</span><span class="en">First digital twin of a real plant</span></h3><p><span class="pt">349 componentes, 70 strings e 1.890 módulos, com histórico de 12 meses de O&amp;M.</span><span class="en">349 components, 70 strings and 1,890 modules, with 12 months of O&amp;M history.</span></p></div></li>
+      <li class="next"><span class="when"><span class="pt">próximo</span><span class="en">next</span></span><span class="pin"></span><div class="body"><h3><span class="pt">Dados ao vivo e o Brain em operação</span><span class="en">Live data and the Brain in operation</span></h3><p><span class="pt">Conectar inversores, SCADA e clima em tempo real, e levar a SIGHT a mais usinas.</span><span class="en">Connect inverters, SCADA and weather in real time, and bring SIGHT to more plants.</span></p></div></li>
+    </ol>
+  </div>
+</section>
+</div>
 </main>
-<footer class="wrap footer"><a class="brand" href="#topo" aria-label="SIGHT — início"><img src="assets/logo.JPG" width="640" height="640" alt="SIGHT" loading="lazy"></a><span>Dados conectados. Visão por módulo.</span><span>© 2026 SIGHT</span><a href="#topo">Voltar ao topo ↑</a></footer>
-</body>
-</html>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="SIGHT"><img src="img/mark.png" alt=""><span>Sight</span></a>
+    <span><span class="pt">Dados conectados. Da usina ao módulo.</span><span class="en">Connected data. From plant to module.</span></span>
+    <span>© 2026 SIGHT</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var root=document.documentElement;
+  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* language */
+  function setLang(l){
+    root.setAttribute('data-lang',l); root.lang=(l==='en'?'en':'pt-BR');
+    document.getElementById('lang-pt').setAttribute('aria-pressed',l==='pt');
+    document.getElementById('lang-en').setAttribute('aria-pressed',l==='en');
+    try{localStorage.setItem('sight-lang',l)}catch(e){}
+  }
+  var saved=null; try{saved=localStorage.getItem('sight-lang')}catch(e){}
+  setLang(saved==='en'?'en':'pt');
+  document.querySelectorAll('[data-set-lang]').forEach(function(b){b.addEventListener('click',function(){setLang(b.getAttribute('data-set-lang'))})});
+
+  /* views */
+  var views=['team','trajectory'];
+  function route(){
+    var h=(location.hash||'').slice(1);
+    var v=views.indexOf(h)>=0?h:'home';
+    document.querySelectorAll('[data-view]').forEach(function(el){el.hidden=el.getAttribute('data-view')!==v});
+    document.querySelectorAll('[data-nav]').forEach(function(a){a.toggleAttribute('aria-current',a.getAttribute('data-nav')===v);if(a.getAttribute('data-nav')===v)a.setAttribute('aria-current','page')});
+    if(v!=='home'){window.scrollTo(0,0);return}
+    if(h&&h!=='top'){var t=document.getElementById(h);if(t)requestAnimationFrame(function(){t.scrollIntoView()})}
+    else if(h==='top'){window.scrollTo(0,0)}
+    fit();
+  }
+  window.addEventListener('hashchange',route);
+
+  /* scale hero scene */
+  var wrap=document.getElementById('sceneWrap'),scene=document.getElementById('scene');
+  function fit(){if(!wrap.clientWidth)return;scene.style.transform='scale('+(wrap.clientWidth/1000)+')'}
+  if(window.ResizeObserver){new ResizeObserver(fit).observe(wrap)}else{window.addEventListener('resize',fit)}
+  route(); fit();
+
+  /* copy email */
+  document.getElementById('copyMail').addEventListener('click',function(){
+    var btn=this,txt='rafael@sight.solar';
+    function done(){var o=btn.innerHTML;btn.innerHTML='<span class="pt">Copiado</span><span class="en">Copied</span>';setTimeout(function(){btn.innerHTML=o},1600)}
+    function sel(){var r=document.createRange();r.selectNodeContents(document.getElementById('mail'));var s=getSelection();s.removeAllRanges();s.addRange(r)}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,sel)}else{sel()}
+  });
+
+  if(reduce){document.querySelectorAll('svg').forEach(function(s){if(s.pauseAnimations)s.pauseAnimations()});}
+
+  /* hero live numbers */
+  var kw=document.getElementById('kw'),clk=document.getElementById('clock'),m=40;
+  if(!reduce){
+    setInterval(function(){kw.textContent=(799+Math.round((Math.random()-.5)*8))+' kW'},2400);
+    setInterval(function(){m++;if(m>59)m=40;clk.textContent='10:'+(m<10?'0':'')+m},15000);
+  }
+
+  /* feature: map to module drill-down */
+  (function(){
+    var svg=document.getElementById('dl'); if(!svg) return;
+    var lv=[].slice.call(svg.querySelectorAll('.lv')),crumbs=document.getElementById('dlCrumbs'),steps=[].slice.call(document.getElementById('dlSteps').children);
+    function show(n,instant){
+      lv.forEach(function(g,i){
+        g.classList.toggle('snap',!!instant);
+        g.classList.toggle('on',i===n); g.classList.toggle('past',i<n);
+      });
+      crumbs.querySelectorAll('[data-c]').forEach(function(el){var c=+el.getAttribute('data-c');el.classList.toggle('off',c>n);el.classList.toggle('cur',c===n&&el.tagName!=='I')});
+      steps.forEach(function(s,i){s.classList.toggle('on',i<=n)});
+    }
+    show(3,true);
+    if(reduce) return;
+    var n=3,hold=[3200,3200,3600,5600];
+    function next(){
+      if(n===3){ lv.forEach(function(g){g.style.opacity='0'}); setTimeout(function(){ show(0,true); lv.forEach(function(g){g.style.opacity=''}); n=0; setTimeout(next,hold[0]) },500); return }
+      n++; show(n,false); setTimeout(next,hold[n]);
+    }
+    setTimeout(next,1800);
+  })();
+
+  /* feature A: cloud over tables */
+  var ns='http://www.w3.org/2000/svg',T=document.getElementById('faT'),tables=[];
+  for(var r=0;r<2;r++)for(var i=0;i<14;i++){
+    var x=30+i*30,y=r?160:40,el=document.createElementNS(ns,'rect');
+    el.setAttribute('x',x);el.setAttribute('y',y);el.setAttribute('width',14);el.setAttribute('height',100);el.setAttribute('class','fa-tbl');
+    T.appendChild(el);
+    var mid=document.createElementNS(ns,'line');mid.setAttribute('x1',x);mid.setAttribute('x2',x+14);mid.setAttribute('y1',y+50);mid.setAttribute('y2',y+50);mid.setAttribute('class','fa-mid');T.appendChild(mid);
+    tables.push({el:el,cx:x+7,cy:y+50});
+  }
+  var flag=document.createElementNS(ns,'rect');flag.setAttribute('x',360);flag.setAttribute('y',90);flag.setAttribute('width',14);flag.setAttribute('height',50);flag.setAttribute('class','fa-flag');T.appendChild(flag);
+  var shade=document.getElementById('faShade'),cloud=document.getElementById('faCloud'),chip=document.getElementById('faChip'),chipT=document.getElementById('faChipT');
+  var nEl=document.getElementById('faN'),kEl=document.getElementById('faKw'),aEl=document.getElementById('faA');
+  function inShade(px,py,cx){var dx=(px-cx)/85,dy=(py-150)/110;return dx*dx+dy*dy<1}
+  function drawA(cx){
+    shade.setAttribute('cx',cx);cloud.setAttribute('cx',cx-30);
+    var n=0;tables.forEach(function(t){var s=inShade(t.cx,t.cy,cx);t.el.classList.toggle('sh',s);if(s)n++});
+    var flagShaded=inShade(367,115,cx);
+    flag.classList.toggle('wait',flagShaded);
+    var en=root.getAttribute('data-lang')==='en';
+    chip.setAttribute('fill',flagShaded?'rgba(154,167,184,.4)':'rgba(255,154,61,.92)');
+    chipT.innerHTML=flagShaded?'<tspan class="pt">na sombra · aguarda</tspan><tspan class="en">in shade · waiting</tspan>':'<tspan class="pt">−7,4% · alerta</tspan><tspan class="en">−7.4% · flag</tspan>';
+    chipT.setAttribute('fill',flagShaded?'#F2F4F7':'#1A0E02');
+    var strings=n*2;nEl.textContent=strings;kEl.textContent=(strings?'−':'')+Math.round(strings*9.5)+' kW';aEl.textContent=flagShaded?'0':'1';
+  }
+  drawA(180);
+  if(!reduce){
+    var t0=performance.now();
+    (function loop(now){var p=((now-t0)/14000)%1;drawA(-120+p*720);requestAnimationFrame(loop)})(t0);
+  }
+
+  /* feature C: breaker trip cycle */
+  var sld=document.getElementById('sld'),b2=sld.querySelector('.br[data-i="1"]'),k2=document.getElementById('k2'),kb=document.getElementById('kbus'),kg=document.getElementById('kgrid'),tripped=false;
+  function setTrip(on){tripped=on;sld.classList.toggle('tripped',on);b2.classList.toggle('off',on);k2.textContent=on?'0 kW':'238 kW';kb.textContent=on?'717 kW':'955 kW';kg.textContent=on?'711 kW':'947 kW'}
+  if(!reduce){setInterval(function(){setTrip(!tripped)},5000)}
+})();
+</script>
+
+</body></html>
