@@ -883,7 +883,8 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;
     try{localStorage.setItem('sight-lang',l)}catch(e){}
   }
   var saved=null; try{saved=localStorage.getItem('sight-lang')}catch(e){}
-  setLang(saved==='en'?'en':'pt');
+  var q=null; try{q=new URLSearchParams(location.search).get('lang')}catch(e){}
+  setLang(q==='en'||q==='pt' ? q : (saved==='en'?'en':'pt'));
   document.querySelectorAll('[data-set-lang]').forEach(function(b){b.addEventListener('click',function(){setLang(b.getAttribute('data-set-lang'))})});
 
   /* views */
